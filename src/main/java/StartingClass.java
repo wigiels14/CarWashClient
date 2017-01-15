@@ -1,49 +1,39 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import Database.DatabaseConnection;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
-public class StartingClass {
-	public static void main(String[] argv) {
+public class StartingClass extends Application {
 
-		System.out.println("-------- PostgreSQL "
-				+ "JDBC Connection Testing ------------");
+	@Override
+	public void start(Stage primaryStage) {
+		Button btn = new Button();
+		btn.setText("Say 'Hello World'");
+		btn.setOnAction(new EventHandler<ActionEvent>() {
 
-		try {
+			public void handle(ActionEvent event) {
+				System.out.println("Hello World!");
+			}
+		});
 
-			Class.forName("org.postgresql.Driver");
+		StackPane root = new StackPane();
+		root.getChildren().add(btn);
 
-		} catch (ClassNotFoundException e) {
+		Scene scene = new Scene(root, 300, 250);
 
-			System.out.println("Where is your PostgreSQL JDBC Driver? "
-					+ "Include in your library path!");
-			e.printStackTrace();
-			return;
+		DatabaseConnection conn = new DatabaseConnection();
+		conn.connectToDatabase();
+		primaryStage.setTitle("Hello World!");
+		primaryStage.setScene(scene);
+		primaryStage.show();
+	}
 
-		}
-
-		System.out.println("PostgreSQL JDBC Driver Registered!");
-
-		Connection connection = null;
-
-		try {
-
-			connection = DriverManager.getConnection(
-					"jdbc:postgresql://127.0.0.1:5432/CarWash", "postgres",
-					"admin");
-
-		} catch (SQLException e) {
-
-			System.out.println("Connection Failed! Check output console");
-			e.printStackTrace();
-			return;
-
-		}
-
-		if (connection != null) {
-			System.out.println("You made it, take control your database now!");
-		} else {
-			System.out.println("Failed to make connection!");
-		}
+	public static void main(String[] args) {
+		launch(args);
 	}
 
 }
