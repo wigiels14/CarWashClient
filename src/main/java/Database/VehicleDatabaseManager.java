@@ -1,0 +1,5 @@
+package Database;
+
+class VehicleDatabaseManager {
+
+}
