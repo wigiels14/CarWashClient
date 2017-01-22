@@ -34,5 +34,4 @@ public class RightLogInPanel extends GridPane {
 		});
 
 	}
-
 }

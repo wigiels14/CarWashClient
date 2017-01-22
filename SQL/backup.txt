@@ -86,3 +86,39 @@ SERVICE_ID NUMERIC(10) NOT NULL REFERENCES SERVICE(ID),
 CAR_STATION_EMPLOYEE_ID NUMERIC(10) NOT NULL REFERENCES CAR_STATION_EMPLOYEE(ID),
 PRIMARY KEY(SERVICE_ID, CAR_STATION_EMPLOYEE_ID)
 );
+
+DROP SEQUENCE customer_sequence;
+DROP SEQUENCE car_wash_employee_sequence;
+DROP SEQUENCE order_sequence;
+DROP SEQUENCE service_sequence;
+DROP SEQUENCE vehicle_sequence;
+DROP SEQUENCE payment_sequence;
+DROP SEQUENCE remmitance_sequence;
+DROP SEQUENCE discount_sequence;
+
+CREATE SEQUENCE customer_sequence;
+CREATE SEQUENCE car_wash_employee_sequence;
+CREATE SEQUENCE service_sequence;
+CREATE SEQUENCE order_sequence;
+CREATE SEQUENCE vehicle_sequence;
+CREATE SEQUENCE payment_sequence;
+CREATE SEQUENCE remmitance_sequence;
+CREATE SEQUENCE discount_sequence;
+  
+DROP FUNCTION create_customer(idNumber IN VARCHAR,pesel IN VARCHAR,customer_password IN VARCHAR);
+CREATE FUNCTION create_customer(idNumber IN VARCHAR,pesel IN VARCHAR,customer_password IN VARCHAR)
+RETURNS void AS $$
+BEGIN
+    INSERT INTO CUSTOMER(ID, CUSTOMER_PASSWORD, PESEL, ID_NUMBER, ACCOUNT_BALLANCE)
+    VALUES(nextval('customer_sequence'), customer_password, pesel, idNumber, 0);
+END; 
+$$ LANGUAGE plpgsql;
+
+DO $$ BEGIN
+    PERFORM create_customer('2','3','1');
+END $$;
+
+SELECT * FROM CUSTOMER;
+
+ INSERT INTO CAR_STATION_EMPLOYEE(ID, CAR_STATION_EMPLOYEE_PASSWORD, FIRST_NAME, PESEL, ID_NUMBER, LAST_NAME)
+ VALUES(nextval('customer_sequence'), '55', '55', '55', '55', '55');

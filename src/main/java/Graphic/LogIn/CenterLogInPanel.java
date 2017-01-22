@@ -1,4 +1,9 @@
 package Graphic.LogIn;
+
+import java.io.IOException;
+
+import Server.ClientQuery;
+import Starting.JavaFX;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,54 +15,107 @@ import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 
 public class CenterLogInPanel extends VBox {
-	GridPane usernamePanel = new GridPane();
-	Text monopolyText, usernameText, logInText, wrongDataField;
-	TextField passwordField, usernameField;
+	GridPane customerPanel = new GridPane();
+	Text logoText, idNumberText, passwordText, wrongDataField;
+	TextField passwordField, idNumberField;
 	Button myLogInButton;
 	public boolean isUserAvail, isUserLoggedIn;
 
 	public CenterLogInPanel() {
-		monopolyText = new Text("CarWash System");
-		monopolyText.setId("monopolyText");
-		monopolyText.setTranslateX(-60);
-		monopolyText.setTranslateY(10);
-		usernamePanel.add(monopolyText, 1, 0);
+		logoText = new Text("CarWash System");
+		logoText.setId("monopolyText");
+		logoText.setTranslateX(-60);
+		logoText.setTranslateY(10);
+		customerPanel.add(logoText, 1, 0);
 
-		usernameText = new Text("Username");
-		usernameText.setId("usernameText");
-		usernameText.setTranslateX(37);
-		usernameText.setTranslateY(72);
-		usernamePanel.add(usernameText, 0, 0);
+		idNumberText = new Text("ID Number");
+		idNumberText.setId("usernameText");
+		idNumberText.setTranslateX(37);
+		idNumberText.setTranslateY(72);
+		customerPanel.add(idNumberText, 0, 0);
 
-		logInText = new Text("Password");
-		logInText.setId("usernameText");
-		logInText.setTranslateX(37);
-		logInText.setTranslateY(88);
-		usernamePanel.add(logInText, 0, 1);
+		passwordText = new Text("Password");
+		passwordText.setId("usernameText");
+		passwordText.setTranslateX(37);
+		passwordText.setTranslateY(88);
+		customerPanel.add(passwordText, 0, 1);
 
-		usernameField = new TextField();
-		usernameField.setTranslateX(160);
-		usernameField.setTranslateY(15);
-		usernamePanel.add(usernameField, 0, 2);
+		idNumberField = new TextField();
+		idNumberField.setTranslateX(160);
+		idNumberField.setTranslateY(15);
+		customerPanel.add(idNumberField, 0, 2);
 
 		passwordField = new TextField();
 		passwordField.setTranslateX(160);
 		passwordField.setTranslateY(45);
-		usernamePanel.add(passwordField, 0, 3);
+		customerPanel.add(passwordField, 0, 3);
 
 		myLogInButton = new Button("Log in");
 		myLogInButton.setId("myLogInButton");
 		myLogInButton.setTranslateX(290);
 		myLogInButton.setTranslateY(90);
-		usernamePanel.add(myLogInButton, 0, 4);
+		myLogInButton.setOnAction(e -> {
+			isUserInSystemDatabase();
+		});
+		customerPanel.add(myLogInButton, 0, 4);
 
 		wrongDataField = new Text("");
 		wrongDataField.setTranslateX(-170);
 		wrongDataField.setTranslateY(201);
 		wrongDataField.setId("wrongDataText");
-		usernamePanel.add(wrongDataField, 1, 0);
+		customerPanel.add(wrongDataField, 1, 0);
 
-		getChildren().add(usernamePanel);
+		getChildren().add(customerPanel);
 	}
 
+	boolean isUserInSystemDatabase() {
+		String idNumber = this.idNumberField.getText();
+		String password = this.passwordField.getText();
+		if (isLogInPanelProperlyFilled()) {
+			sendQueryIsUserInSystemDatabase(idNumber, password);
+		} else {
+			setWrongDataField("Incorrect data");
+		}
+		return false;
+	}
+
+	private boolean isIDNumberFieldFilled() {
+		return (idNumberField.getText().length() > 0 && idNumberField.getText()
+				.length() < 10);
+	}
+
+	private boolean isPasswordFieldFilled() {
+		return (passwordField.getText().length() > 0 && passwordField.getText()
+				.length() < 31);
+	}
+
+	boolean isLogInPanelProperlyFilled() {
+		return isIDNumberFieldFilled() && isPasswordFieldFilled();
+	}
+
+	public void setWrongDataField(String content) {
+		wrongDataField.setText(content);
+	}
+
+	private void sendQueryIsUserInSystemDatabase(String idNumber,
+			String password) {
+		try {
+			ClientQuery clientQuery = new ClientQuery("isUserInSystemDatabase");
+			clientQuery.parameters[0] = idNumber;
+			clientQuery.parameters[1] = password;
+			JavaFX.out.writeObject(clientQuery);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void clearFields() {
+		idNumberField.clear();
+		passwordField.clear();
+	}
+
+	public void clearTexts() {
+		wrongDataField.setText("");
+	}
 }

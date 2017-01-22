@@ -1,0 +1,8 @@
+DROP FUNCTION create_customer(idNumber IN VARCHAR,pesel IN VARCHAR,customer_password IN VARCHAR);
+CREATE FUNCTION create_customer(idNumber IN VARCHAR,pesel IN VARCHAR,customer_password IN VARCHAR)
+RETURNS void AS $$
+BEGIN
+    INSERT INTO CUSTOMER(ID, CUSTOMER_PASSWORD, PESEL, ID_NUMBER, ACCOUNT_BALLANCE)
+    VALUES(nextval('customer_sequence'), customer_password, pesel, idNumber, 0);
+END; 
+$$ LANGUAGE plpgsql;
