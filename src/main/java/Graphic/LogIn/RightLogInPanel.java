@@ -3,7 +3,7 @@ package Graphic.LogIn;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
-import Starting.JavaFX;
+import Starting.Client;
 
 public class RightLogInPanel extends GridPane {
 	Button mySignUpButton;
@@ -30,7 +30,7 @@ public class RightLogInPanel extends GridPane {
 		this.add(mySignUpButton, 0, 2);
 		
 		mySignUpButton.setOnAction(e -> {
-			JavaFX.primaryStage.setScene(JavaFX.registerPanelScene);
+			Client.setRegisterSceneActive();
 		});
 
 	}

@@ -70,6 +70,39 @@ public class CustomerAccountDatabaseManager {
 			return false;
 		}
 
+		String[] fetchCustomer(String idNumber) {
+			String query = "SELECT ID, CUSTOMER_PASSWORD, FIRST_NAME, LAST_NAME, PESEL, ACCOUNT_BALLANCE"
+					+ " FROM CUSTOMER WHERE ID_NUMBER = ?";
+
+			PreparedStatement myStatement;
+			ResultSet queryResult = null;
+			try {
+				myStatement = Server.complexDatabaseManager.CONNECTION
+						.prepareStatement(query);
+				myStatement.setString(1, idNumber);
+
+				queryResult = myStatement.executeQuery();
+
+				String id = null, customerPassword = null, firstName = null, lastName = null, pesel = null, accountBalance = null;
+				while (queryResult.next()) {
+					id = queryResult.getString("ID");
+					customerPassword = queryResult
+							.getString("CUSTOMER_PASSWORD");
+					firstName = queryResult.getString("FIRST_NAME");
+					lastName = queryResult.getString("LAST_NAME");
+					pesel = queryResult.getString("PESEL");
+					accountBalance = queryResult.getString("ACCOUNT_BALLANCE");
+				}
+				return new String[] { id, customerPassword, firstName,
+						lastName, pesel, idNumber, accountBalance };
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+
 		boolean createCustomer(String idNumber, String pesel, String password) {
 			String query = "SELECT create_customer(?,?,?);";
 
@@ -89,11 +122,83 @@ public class CustomerAccountDatabaseManager {
 			}
 			return false;
 		}
+
+		private void changeCustomerFirstName(String idNumber, String firstName) {
+			String query = "SELECT change_customer_firstName(?, ?);";
+
+			PreparedStatement myStatement;
+			ResultSet queryResult = null;
+			try {
+				myStatement = Server.complexDatabaseManager.CONNECTION
+						.prepareStatement(query);
+				myStatement.setString(1, idNumber);
+				myStatement.setString(2, firstName);
+
+				queryResult = myStatement.executeQuery();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		private void changeCustomerLastName(String idNumber, String lastName) {
+			String query = "SELECT change_customer_lastName(?, ?);";
+
+			PreparedStatement myStatement;
+			ResultSet queryResult = null;
+			try {
+				myStatement = Server.complexDatabaseManager.CONNECTION
+						.prepareStatement(query);
+				myStatement.setString(1, idNumber);
+				myStatement.setString(2, lastName);
+
+				queryResult = myStatement.executeQuery();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		private void changeCustomerPassword(String idNumber, String password) {
+			String query = "SELECT change_customer_password(?, ?);";
+
+			PreparedStatement myStatement;
+			ResultSet queryResult = null;
+			try {
+				myStatement = Server.complexDatabaseManager.CONNECTION
+						.prepareStatement(query);
+				myStatement.setString(1, idNumber);
+				myStatement.setString(2, password);
+
+				queryResult = myStatement.executeQuery();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public boolean isCustomerInSystemDatabase(String idNumber, String password) {
 		return customerAccountManagerProxy.isCustomerInSystemDatabase(idNumber,
 				password);
+	}
+	
+	public void changeCustomerPassword(String idNumber, String password) {
+		customerAccountManagerProxy.changeCustomerPassword(idNumber, password);
+	}
+
+
+	public void changeCustomerLastName(String idNumber, String lastName) {
+		customerAccountManagerProxy.changeCustomerLastName(idNumber, lastName);
+	}
+
+	public void changeCustomerFirstName(String idNumber, String firstName) {
+		customerAccountManagerProxy
+				.changeCustomerFirstName(idNumber, firstName);
+	}
+
+	public String[] fetchCustomerFromDatabase(String idNumber) {
+		return customerAccountManagerProxy.fetchCustomer(idNumber);
 	}
 
 	public boolean isCustomerAlreadyRegistered(String idNumber) {

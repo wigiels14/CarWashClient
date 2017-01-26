@@ -3,7 +3,7 @@ package Graphic.Register;
 import java.io.IOException;
 
 import Server.ClientQuery;
-import Starting.JavaFX;
+import Starting.Client;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -16,19 +16,18 @@ public class RegisterPanel extends GridPane {
 	Text idNumberText, passwordText, wrongDataText, correctDataText, peselText;
 	public TextField peselField, idNumberField;
 	public PasswordField passwordField;
-	public boolean userNameAvaible;
 
-	private void createMonopolyText() {
-		Text monopolyText = new Text("Register");
-		monopolyText.setId("monopolyText");
-		monopolyText.setTranslateX(165);
-		monopolyText.setTranslateY(12);
-		this.add(monopolyText, 0, 0);
+	private void createRegisterText() {
+		Text registerText = new Text("Register");
+		registerText.setId("carWashText");
+		registerText.setTranslateX(165);
+		registerText.setTranslateY(12);
+		this.add(registerText, 0, 0);
 	}
 
-	private void createUserNameText() {
+	private void createIDNumberText() {
 		idNumberText = new Text("ID Number");
-		idNumberText.setId("usernameText");
+		idNumberText.setId("dataText");
 		idNumberText.setTranslateX(52);
 		idNumberText.setTranslateY(40);
 		this.add(idNumberText, 0, 1);
@@ -38,21 +37,23 @@ public class RegisterPanel extends GridPane {
 		passwordText = new Text("Password");
 		passwordText.setTranslateX(52);
 		passwordText.setTranslateY(69);
-		passwordText.setId("usernameText");
+		passwordText.setId("dataText");
 		this.add(passwordText, 0, 2);
 	}
 
 	private void createPasswordField() {
 		passwordField = new PasswordField();
 		passwordField.setTranslateX(7);
+		passwordField.setId("Field");
 		passwordField.setTranslateY(89);
 		this.add(passwordField, 1, 1);
 	}
 
-	private void createUserNameField() {
+	private void createIDNumberField() {
 		idNumberField = new TextField();
 		idNumberField.setTranslateX(7);
 		idNumberField.setTranslateY(73);
+		idNumberField.setId("Field");
 		this.add(idNumberField, 1, 0);
 	}
 
@@ -66,12 +67,12 @@ public class RegisterPanel extends GridPane {
 			clearLogInPanelFields();
 			clearTexts();
 			clearLogInPanelTexts();
-			JavaFX.primaryStage.setScene(JavaFX.logInPanelScene);
+			Client.setLogInSceneActive();
 		});
 		this.add(backButton, 0, 5);
 	}
 
-	private void createEmailField() {
+	private void createPeselField() {
 		peselField = new TextField();
 		peselField.setTranslateX(7);
 		peselField.setTranslateY(117);
@@ -79,11 +80,11 @@ public class RegisterPanel extends GridPane {
 		this.add(peselField, 1, 2);
 	}
 
-	private void createEmailText() {
+	private void createPeselText() {
 		peselText = new Text("Pesel");
 		peselText.setTranslateX(52);
 		peselText.setTranslateY(97);
-		peselText.setId("usernameText");
+		peselText.setId("dataText");
 		this.add(peselText, 0, 3);
 	}
 
@@ -94,9 +95,9 @@ public class RegisterPanel extends GridPane {
 		mySingUpButton.setTranslateY(120);
 
 		mySingUpButton.setOnAction(e -> {
-			String customerIDNumber = JavaFX.registerPanel.idNumberField.getText();
-			String customerPassword =  JavaFX.registerPanel.passwordField.getText();
-			String customerPesel = JavaFX.registerPanel.peselField.getText();
+			String customerIDNumber = Client.registerPanel.idNumberField.getText();
+			String customerPassword =  Client.registerPanel.passwordField.getText();
+			String customerPesel = Client.registerPanel.peselField.getText();
 			
 			if(isRegisterPanelProperlyFilled()) {
 			isCustomerAlreadyRegistered(customerIDNumber);
@@ -124,21 +125,21 @@ public class RegisterPanel extends GridPane {
 	}
 
 	public RegisterPanel() {
-		createMonopolyText();
+		createRegisterText();
 
-		createUserNameText();
+		createIDNumberText();
 
 		createPasswordText();
 
-		createUserNameField();
+		createIDNumberField();
 
 		createPasswordField();
 
-		createEmailField();
+		createPeselField();
 
 		createBackButton();
 
-		createEmailText();
+		createPeselText();
 
 		createSingUpButton();
 
@@ -187,15 +188,15 @@ public class RegisterPanel extends GridPane {
 
 	public void sendCreateCustomer() {
 		try {
-			String idNumber = JavaFX.registerPanel.idNumberField.getText();
-			String password = JavaFX.registerPanel.passwordField.getText();
-			String pesel = JavaFX.registerPanel.peselField.getText();
+			String idNumber = Client.registerPanel.idNumberField.getText();
+			String password = Client.registerPanel.passwordField.getText();
+			String pesel = Client.registerPanel.peselField.getText();
 
 			ClientQuery clientQuery = new ClientQuery("createCustomer");
 			clientQuery.parameters[0] = idNumber;
 			clientQuery.parameters[1] = password;
 			clientQuery.parameters[2] = pesel;
-			JavaFX.out.writeObject(clientQuery);
+			Client.out.writeObject(clientQuery);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -207,7 +208,7 @@ public class RegisterPanel extends GridPane {
 			ClientQuery clientQuery = new ClientQuery(
 					"isCustomerAlreadyRegistered");
 			clientQuery.parameters[0] = idNumber;
-			JavaFX.out.writeObject(clientQuery);
+			Client.out.writeObject(clientQuery);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -226,11 +227,11 @@ public class RegisterPanel extends GridPane {
 	}
 
 	private void clearLogInPanelTexts() {
-		JavaFX.mainLogInPanel.myVBox.clearTexts();
+		Client.mainLogInPanel.myVBox.clearTexts();
 	}
 
 	private void clearLogInPanelFields() {
-		JavaFX.mainLogInPanel.myVBox.clearFields();
+		Client.mainLogInPanel.myVBox.clearFields();
 	}
 
 }

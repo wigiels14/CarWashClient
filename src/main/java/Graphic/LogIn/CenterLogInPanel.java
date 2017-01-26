@@ -3,7 +3,7 @@ package Graphic.LogIn;
 import java.io.IOException;
 
 import Server.ClientQuery;
-import Starting.JavaFX;
+import Starting.Client;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,31 +23,31 @@ public class CenterLogInPanel extends VBox {
 
 	public CenterLogInPanel() {
 		logoText = new Text("CarWash System");
-		logoText.setId("monopolyText");
+		logoText.setId("carWashText");
 		logoText.setTranslateX(-60);
 		logoText.setTranslateY(10);
 		customerPanel.add(logoText, 1, 0);
 
 		idNumberText = new Text("ID Number");
-		idNumberText.setId("usernameText");
+		idNumberText.setId("dataText");
 		idNumberText.setTranslateX(37);
 		idNumberText.setTranslateY(72);
 		customerPanel.add(idNumberText, 0, 0);
 
 		passwordText = new Text("Password");
-		passwordText.setId("usernameText");
+		passwordText.setId("dataText");
 		passwordText.setTranslateX(37);
 		passwordText.setTranslateY(88);
 		customerPanel.add(passwordText, 0, 1);
 
 		idNumberField = new TextField();
 		idNumberField.setTranslateX(160);
-		idNumberField.setTranslateY(15);
+		idNumberField.setTranslateY(13);
 		customerPanel.add(idNumberField, 0, 2);
 
 		passwordField = new TextField();
 		passwordField.setTranslateX(160);
-		passwordField.setTranslateY(45);
+		passwordField.setTranslateY(38);
 		customerPanel.add(passwordField, 0, 3);
 
 		myLogInButton = new Button("Log in");
@@ -60,7 +60,7 @@ public class CenterLogInPanel extends VBox {
 		customerPanel.add(myLogInButton, 0, 4);
 
 		wrongDataField = new Text("");
-		wrongDataField.setTranslateX(-170);
+		wrongDataField.setTranslateX(-140);
 		wrongDataField.setTranslateY(201);
 		wrongDataField.setId("wrongDataText");
 		customerPanel.add(wrongDataField, 1, 0);
@@ -103,7 +103,7 @@ public class CenterLogInPanel extends VBox {
 			ClientQuery clientQuery = new ClientQuery("isUserInSystemDatabase");
 			clientQuery.parameters[0] = idNumber;
 			clientQuery.parameters[1] = password;
-			JavaFX.out.writeObject(clientQuery);
+			Client.out.writeObject(clientQuery);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

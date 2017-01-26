@@ -64,10 +64,51 @@ public class ConnectedClient extends Thread {
 			if (clientQuery instanceof ClientQuery) {
 				if (((ClientQuery) clientQuery).type
 						.equals("isCustomerAlreadyRegistered")) {
-					proceedisCustomerAlreadyRegistered((ClientQuery) clientQuery);
+					proceedIsCustomerAlreadyRegistered((ClientQuery) clientQuery);
 				}
 			}
+			if (clientQuery instanceof ClientQuery) {
+				if (((ClientQuery) clientQuery).type.equals("fetchCustomer")) {
+					fetchCustomer((ClientQuery) clientQuery);
+				}
+			}
+			if (((ClientQuery) clientQuery).type
+					.equals("changeCustomerFirstName")) {
+				proceedChangeCustomerFirstName((ClientQuery) clientQuery);
+			}
+			if (((ClientQuery) clientQuery).type
+					.equals("changeCustomerLastName")) {
+				proceedChangeCustomerLastName((ClientQuery) clientQuery);
+			}
+			if (((ClientQuery) clientQuery).type
+					.equals("changeCustomerPassword")) {
+				proceedChangeCustomerPassword((ClientQuery) clientQuery);
+			}
 		}
+	}
+
+	private void proceedChangeCustomerPassword(ClientQuery response) {
+		String idNumber = response.parameters[0];
+		String password = response.parameters[1];
+
+		Server.complexDatabaseManager.customerAccountDatabaseManager
+				.changeCustomerPassword(idNumber, password);
+	}
+
+	private void proceedChangeCustomerLastName(ClientQuery response) {
+		String idNumber = response.parameters[0];
+		String lastName = response.parameters[1];
+
+		Server.complexDatabaseManager.customerAccountDatabaseManager
+				.changeCustomerLastName(idNumber, lastName);
+	}
+
+	private void proceedChangeCustomerFirstName(ClientQuery response) {
+		String idNumber = response.parameters[0];
+		String firstName = response.parameters[1];
+
+		Server.complexDatabaseManager.customerAccountDatabaseManager
+				.changeCustomerFirstName(idNumber, firstName);
 	}
 
 	private void proceedIsUserInSystemDatabase(ClientQuery clientQuery) {
@@ -85,7 +126,7 @@ public class ConnectedClient extends Thread {
 			boolean isCustomerInSystemDatabase = Server.complexDatabaseManager.customerAccountDatabaseManager
 					.isCustomerInSystemDatabase(clientQuery.parameters[0],
 							clientQuery.parameters[1]);
-
+			response.parameters[0] = clientQuery.parameters[0];
 			response.isResponseTrue = isCustomerInSystemDatabase;
 
 			sendResponce(response);
@@ -106,7 +147,26 @@ public class ConnectedClient extends Thread {
 		sendResponce(response);
 	}
 
-	private void proceedisCustomerAlreadyRegistered(ClientQuery clientQuery) {
+	private void fetchCustomer(ClientQuery clientQuery) {
+		ClientQuery response = (new ClientQuery("fetchCustomer"));
+		String idNumber = clientQuery.parameters[0];
+		String[] responseData = Server.complexDatabaseManager.customerAccountDatabaseManager
+				.fetchCustomerFromDatabase(idNumber);
+
+		response.parameters[0] = responseData[0];
+		response.parameters[1] = responseData[1];
+		response.parameters[2] = responseData[2];
+		response.parameters[3] = responseData[3];
+		response.parameters[4] = responseData[4];
+		response.parameters[5] = responseData[5];
+		response.parameters[6] = responseData[6];
+		response.setAdditionalObjects(Server.complexDatabaseManager.vehicleDatabaseManager
+				.fetchVehiclesByCustomerID(responseData[0]));
+
+		sendResponce(response);
+	}
+
+	private void proceedIsCustomerAlreadyRegistered(ClientQuery clientQuery) {
 		ClientQuery response = (new ClientQuery("isCustomerAlreadyRegistered"));
 		String idNumber = clientQuery.parameters[0];
 		boolean isResponseTrue = Server.complexDatabaseManager.customerAccountDatabaseManager
