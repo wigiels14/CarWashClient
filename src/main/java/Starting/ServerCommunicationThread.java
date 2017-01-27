@@ -1,14 +1,21 @@
 package Starting;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-import Graphic.CustmerInterface.TopCustomerInterfacePanel;
+import Business.Person.Customer;
+import Business.Service.ManualWashStationService;
+import Business.Service.Service;
+import Business.Service.SteamWashStationService;
+import Business.Service.TouchlessWashStationService;
+import Business.Service.TunelWashStationService;
+import Business.Vehicle.Vehicle;
 import Server.ClientQuery;
-import Server.Server;
 import javafx.application.Platform;
 
 public class ServerCommunicationThread extends Thread {
 
+	@Override
 	public void run() {
 		while (true) {
 			Object response = convertServerResponce();
@@ -29,8 +36,40 @@ public class ServerCommunicationThread extends Thread {
 				if (((ClientQuery) response).type.equals("fetchCustomer")) {
 					proceedFetchCustomer((ClientQuery) response);
 				}
+				if (((ClientQuery) response).type.equals("fetchAllServices")) {
+					proceedFetchAllServices((ClientQuery) response);
+				}
 			}
 		}
+	}
+
+	private void proceedFetchAllServices(ClientQuery response) {
+		System.out.println("JESTEM TU ");
+		for (Object object : response.getAdditionalObjects()) {
+			String[] convertedObject = (String[]) object;
+			Service covertedService = null;
+			switch (convertedObject[1]) {
+			case ("TunelWashStationService"):
+				covertedService = new TunelWashStationService();
+				break;
+			case ("TouchlessWashStationService"):
+				covertedService = new TouchlessWashStationService();
+				break;
+			case ("SteamWashStationService"):
+				covertedService = new SteamWashStationService();
+				break;
+			case ("ManualWashStationService"):
+				covertedService = new ManualWashStationService();
+				break;
+			}
+			covertedService.setId(convertedObject[0]);
+			covertedService.setName(convertedObject[2]);
+			covertedService.setCost(Double.parseDouble(convertedObject[3]));
+			ArrayList<Service> services = Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
+					.getServices();
+			services.add(covertedService);
+		}
+		Platform.runLater(() ->Client.mainCustomerInterfacePanel.addOrderPanel.setServicesParts());
 	}
 
 	private void proceedFetchCustomer(ClientQuery response) {
@@ -48,7 +87,6 @@ public class ServerCommunicationThread extends Thread {
 				.setCustomerIdNumber(response.parameters[5]);
 		Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
 				.setCustomerAccountBalance(response.parameters[6]);
-
 		Platform.runLater(() ->Client.mainCustomerInterfacePanel.topCustomerInterfacePanel.setIDText());
 		Platform.runLater(() ->Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
 				.setFirstNameText());
@@ -57,7 +95,18 @@ public class ServerCommunicationThread extends Thread {
 		Platform.runLater(() ->Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
 				.accountBalaceText());
 
-		System.out.println(response.getAdditionalObjects().toString());
+		
+		for (Object object : response.getAdditionalObjects()) {
+			String[] convertedObject = (String[])object;
+			Vehicle covertedVehicle = new Vehicle();
+			covertedVehicle.setId(convertedObject[0]);
+			covertedVehicle.setVin(convertedObject[1]);
+			covertedVehicle.setBrand(convertedObject[2]);
+			covertedVehicle.setCarModel(convertedObject[3]);
+			Customer customer = Client.mainCustomerInterfacePanel.topCustomerInterfacePanel.getCustomer(); 
+			customer.addVehicle(covertedVehicle);
+		}
+
 		Platform.runLater(() -> Client.mainCustomerInterfacePanel.setTopCustomerInterfacePanel());
 	}
 

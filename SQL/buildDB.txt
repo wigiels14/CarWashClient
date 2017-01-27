@@ -32,6 +32,7 @@ ID_NUMBER VARCHAR(9) NOT NULL
 
 CREATE TABLE VEHICLE(
 ID NUMERIC(10) NOT NULL PRIMARY KEY,
+VIN VARCHAR(30) NOT NULL,
 MARK VARCHAR(30) NOT NULL,
 MODEL VARCHAR(30) NOT NULL,
 CUSTOMER_ID NUMERIC(10) REFERENCES CUSTOMER(ID)
@@ -66,7 +67,10 @@ PRIMARY KEY(CUSTMER_ID, DISCOUNT_ID)
 );
 
 CREATE TABLE SERVICE(
-ID NUMERIC(10) NOT NULL PRIMARY KEY
+ID NUMERIC(10) NOT NULL PRIMARY KEY,
+NAME VARCHAR(50) NOT NULL,
+SERVICE_TYPE VARCHAR(50) NOT NULL,
+COST NUMERIC(5) NOT NULL
 );
 
 CREATE TABLE SERVICE_ORDERS(
@@ -87,6 +91,7 @@ CAR_STATION_EMPLOYEE_ID NUMERIC(10) NOT NULL REFERENCES CAR_STATION_EMPLOYEE(ID)
 PRIMARY KEY(SERVICE_ID, CAR_STATION_EMPLOYEE_ID)
 );
 
+
 DROP SEQUENCE customer_sequence;
 DROP SEQUENCE car_wash_employee_sequence;
 DROP SEQUENCE order_sequence;
@@ -104,7 +109,7 @@ CREATE SEQUENCE vehicle_sequence;
 CREATE SEQUENCE payment_sequence;
 CREATE SEQUENCE remmitance_sequence;
 CREATE SEQUENCE discount_sequence;
-  
+
 DROP FUNCTION create_customer(idNumber IN VARCHAR,pesel IN VARCHAR,customer_password IN VARCHAR);
 CREATE FUNCTION create_customer(idNumber IN VARCHAR,pesel IN VARCHAR,customer_password IN VARCHAR)
 RETURNS void AS $$
@@ -114,8 +119,79 @@ BEGIN
 END; 
 $$ LANGUAGE plpgsql;
 
-DO $$ BEGIN
-    PERFORM create_customer('2','3','1');
-END $$;
+DROP FUNCTION create_vehicle(vin IN VARCHAR, mark IN VARCHAR,model IN VARCHAR,customer_id IN NUMERIC);
+CREATE FUNCTION create_vehicle(vin IN VARCHAR, mark IN VARCHAR,model IN VARCHAR,customer_id IN NUMERIC)
+RETURNS void AS $$
+BEGIN
+    INSERT INTO VEHICLE(ID, VIN, MARK, MODEL, CUSTOMER_ID)
+    VALUES(nextval('vehicle_sequence'), vin, mark, model, customer_id);
+END; 
+$$ LANGUAGE plpgsql;
 
-SELECT * FROM CUSTOMER;
+DROP FUNCTION change_customer_firstName(customer_id IN VARCHAR, firstName IN VARCHAR);
+CREATE FUNCTION change_customer_firstName(customer_id IN VARCHAR, firstName IN VARCHAR)
+RETURNS void AS $$
+BEGIN
+UPDATE CUSTOMER 
+ SET FIRST_NAME = firstName
+ WHERE ID_NUMBER = customer_id;
+ END; 
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION change_customer_lastName(customer_id IN VARCHAR, lastName IN VARCHAR);
+CREATE FUNCTION change_customer_lastName(customer_id IN VARCHAR, lastName IN VARCHAR)
+RETURNS void AS $$
+BEGIN
+UPDATE CUSTOMER 
+ SET LAST_NAME = lastName
+ WHERE ID_NUMBER = customer_id;
+ END; 
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION change_customer_password(customer_id IN VARCHAR, customerPassword IN VARCHAR);
+CREATE FUNCTION change_customer_password(customer_id IN VARCHAR, customerPassword IN VARCHAR)
+RETURNS void AS $$
+BEGIN
+UPDATE CUSTOMER 
+ SET CUSTOMER_PASSWORD = customerPassword
+ WHERE ID_NUMBER = customer_id;
+ END; 
+$$ LANGUAGE plpgsql;
+
+
+
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Soft Cloth Exterior Wash', 'TunelWashStationService', 20);
+    
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Tri-Color Polish', 'TunelWashStationService', 15);
+    
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Air-Dry', 'TunelWashStationService', 10);
+
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Vacuum, Mat Cleaners', 'TouchlessWashStationService', 17);
+    
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Cleaning All Interior And Exterior Glass', 'TouchlessWashStationService', 12);
+    
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Exterior Wash', 'TouchlessWashStationService', 21);
+
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Polishing', 'SteamWashStationService', 19);
+    
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Quick vacuum', 'SteamWashStationService', 10);
+    
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Exterior + Interior Wash', 'SteamWashStationService', 40);
+
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'High Pressure Water Wash', 'ManualWashStationService', 11);
+    
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Vacuuming', 'ManualWashStationService', 7);
+    
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Interior Wash', 'ManualWashStationService', 14);

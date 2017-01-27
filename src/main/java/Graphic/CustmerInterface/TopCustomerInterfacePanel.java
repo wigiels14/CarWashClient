@@ -1,17 +1,29 @@
 package Graphic.CustmerInterface;
 
+import java.util.ArrayList;
+
 import Starting.Client;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import Business.Person.Customer;
 import Business.Person.EntityFactory;
+import Business.Service.Service;
 
 public class TopCustomerInterfacePanel extends HBox {
 	private Customer customer;
+	private final ArrayList<Service> services = new ArrayList<Service>();
 	private EntityFactory entityFactory = new EntityFactory();;
 	Text idText, firstNameText, lastNameText, accountBalanceText;
 	Button endAppButton;
+
+	public ArrayList<Service> getServices() {
+		return services;
+	}
+
+	public void addService(Service service) {
+		this.services.add(service);
+	}
 
 	public TopCustomerInterfacePanel() {
 		setCustomer();
@@ -37,19 +49,26 @@ public class TopCustomerInterfacePanel extends HBox {
 	}
 
 	public void setFirstNameText() {
-		firstNameText = new Text("First name: " + customer.getFirstName());
-		firstNameText.setId("registerText");
-		firstNameText.setTranslateX(70);
-		firstNameText.setTranslateY(30);
-		this.getChildren().add(firstNameText);
+		if (firstNameText == null) {
+			firstNameText = new Text("First name: " + customer.getFirstName());
+			firstNameText.setId("registerText");
+			firstNameText.setTranslateX(70);
+			firstNameText.setTranslateY(30);
+			this.getChildren().add(firstNameText);
+		} else {
+			firstNameText.setText("First name: " + customer.getFirstName());
+		}
 	}
 
 	public void setLastNameText() {
-		lastNameText = new Text("Last name: " + customer.getLastName());
-		lastNameText.setId("registerText");
-		lastNameText.setTranslateX(100);
-		lastNameText.setTranslateY(30);
-		this.getChildren().add(lastNameText);
+		if (lastNameText == null) {
+			lastNameText = new Text("Last name: " + customer.getLastName());
+			lastNameText.setId("registerText");
+			lastNameText.setTranslateX(100);
+			lastNameText.setTranslateY(30);
+			this.getChildren().add(lastNameText);
+		}
+		lastNameText.setText("Last name: " + customer.getLastName());
 	}
 
 	public void accountBalaceText() {

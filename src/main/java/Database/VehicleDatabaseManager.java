@@ -3,14 +3,14 @@ package Database;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-import Business.Vehicle.Vehicle;
 import Server.Server;
 
 public class VehicleDatabaseManager {
-	public Vehicle[] fetchVehiclesByCustomerID(String customerID) {
-		Vehicle[] vehicles = new Vehicle[20];
-		String query = "SELECT ID, MARK, MODEL FROM VEHICLE WHERE CUSTOMER_ID = ?";
+	public ArrayList<String[]> fetchVehiclesByCustomerID(String customerID) {
+		ArrayList<String[]> vehicles = new ArrayList<String[]>();
+		String query = "SELECT ID, VIN, MARK, MODEL FROM VEHICLE WHERE CUSTOMER_ID = ?";
 
 		PreparedStatement myStatement;
 		ResultSet queryResult = null;
@@ -21,13 +21,15 @@ public class VehicleDatabaseManager {
 
 			queryResult = myStatement.executeQuery();
 
-			String id = null, mark = null, carModel = null;
+			String id = null, vin = null, mark = null, carModel = null;
 			int iterator = 0;
 			while (queryResult.next()) {
-				vehicles[iterator] = new Vehicle();
-				vehicles[iterator].setId(queryResult.getString("ID"));
-				vehicles[iterator].setBrand(queryResult.getString("BRAND"));
-				vehicles[iterator].setCarModel(queryResult.getString("MODEL"));
+				id = queryResult.getString("ID");
+				vin = queryResult.getString("VIN");
+				mark = queryResult.getString("MARK");
+				carModel = queryResult.getString("MODEL");
+				String[] atributes = { id, vin, mark, carModel };
+				vehicles.add(atributes);
 			}
 			return vehicles;
 
@@ -36,5 +38,27 @@ public class VehicleDatabaseManager {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public boolean createVehicle(String vin, String mark, String model,
+			String customerIDNumber) {
+		String query = "SELECT create_vehicle(?,?,?,?);";
+
+		PreparedStatement myStatement;
+		ResultSet queryResult = null;
+		try {
+			myStatement = Server.complexDatabaseManager.CONNECTION
+					.prepareStatement(query);
+			myStatement.setString(1, vin);
+			myStatement.setString(2, mark);
+			myStatement.setString(3, model);
+			myStatement.setInt(4, Integer.parseInt(customerIDNumber));
+
+			queryResult = myStatement.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

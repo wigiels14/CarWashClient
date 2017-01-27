@@ -1,12 +1,13 @@
 package Server;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class ClientQuery implements Serializable {
 	public String type;
 	public boolean isResponseTrue;
 	public String parameters[] = new String[10];
-	private Object[] additionalObjects;
+	private final ArrayList<Object> additionalObjects = new ArrayList<Object>();
 
 	public ClientQuery(String type) {
 		for (int i = 0; i < 10; i++) {
@@ -15,11 +16,11 @@ public class ClientQuery implements Serializable {
 		this.type = type;
 	}
 
-	public void setAdditionalObjects(Object[] objects) {
-		additionalObjects = objects;
+	public void setAdditionalObjects(ArrayList<Object> objects) {
+		additionalObjects.addAll(objects);
 	}
 
-	public Object[] getAdditionalObjects() {
+	public ArrayList<Object> getAdditionalObjects() {
 		return additionalObjects;
 	}
 }

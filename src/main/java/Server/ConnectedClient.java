@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
+import java.util.ArrayList;
 
 public class ConnectedClient extends Thread {
 	Socket socket;
@@ -43,6 +44,7 @@ public class ConnectedClient extends Thread {
 		}
 	}
 
+	@Override
 	public void run() {
 		initStreams();
 		System.out.println("Connected: " + socket.getInetAddress() + " :"
@@ -84,7 +86,35 @@ public class ConnectedClient extends Thread {
 					.equals("changeCustomerPassword")) {
 				proceedChangeCustomerPassword((ClientQuery) clientQuery);
 			}
+			if (((ClientQuery) clientQuery).type.equals("addVehicle")) {
+				proceedAddVehicle((ClientQuery) clientQuery);
+			}
+			if (((ClientQuery) clientQuery).type.equals("fetchAllServices")) {
+				proceedFetchAllServices((ClientQuery) clientQuery);
+			}
 		}
+	}
+
+	private void proceedFetchAllServices(ClientQuery clientQuery) {
+		ClientQuery response = (new ClientQuery("fetchAllServices"));
+
+		ArrayList<String[]> servicesStrings = Server.complexDatabaseManager.serviceDatabaseManager
+				.fetchAllServices();
+		ArrayList<Object> objects = new ArrayList<Object>();
+		objects.addAll(servicesStrings);
+		response.setAdditionalObjects(objects);
+		System.out.println(objects.size());
+		sendResponce(response);
+	}
+
+	private void proceedAddVehicle(ClientQuery clientQuery) {
+		String vin = clientQuery.parameters[0];
+		String mark = clientQuery.parameters[1];
+		String model = clientQuery.parameters[2];
+		String customerIDNumber = clientQuery.parameters[3];
+
+		Server.complexDatabaseManager.vehicleDatabaseManager.createVehicle(vin,
+				mark, model, customerIDNumber);
 	}
 
 	private void proceedChangeCustomerPassword(ClientQuery response) {
@@ -160,8 +190,10 @@ public class ConnectedClient extends Thread {
 		response.parameters[4] = responseData[4];
 		response.parameters[5] = responseData[5];
 		response.parameters[6] = responseData[6];
-		response.setAdditionalObjects(Server.complexDatabaseManager.vehicleDatabaseManager
+		ArrayList<Object> objects = new ArrayList<Object>();
+		objects.addAll(Server.complexDatabaseManager.vehicleDatabaseManager
 				.fetchVehiclesByCustomerID(responseData[0]));
+		response.setAdditionalObjects(objects);
 
 		sendResponce(response);
 	}

@@ -1,9 +1,24 @@
 package Business.Vehicle;
 
-public class Vehicle {
+import java.io.Serializable;
+
+public class Vehicle implements Serializable {
 	private String id;
+	private String vin;
 	private String brand;
 	private String carModel;
+
+	public String getVin() {
+		return vin;
+	}
+
+	public void setVin(String vin) {
+		this.vin = vin;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
 
 	public String getBrand() {
 		return brand;
@@ -17,7 +32,7 @@ public class Vehicle {
 		return id;
 	}
 
-	public void setBrand(String brand) {
+	public void setMark(String brand) {
 		this.brand = brand;
 	}
 
@@ -29,4 +44,8 @@ public class Vehicle {
 		this.id = id;
 	}
 
+	@Override
+	public String toString() {
+		return "VIN: " + vin + ", Mark: " + brand + ", Model: " + carModel;
+	}
 }

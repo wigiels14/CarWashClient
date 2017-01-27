@@ -1,5 +1,6 @@
 package Graphic.CustmerInterface;
 
+import Business.Vehicle.Vehicle;
 import Starting.Client;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -24,7 +25,7 @@ public class LeftCustomerInterfacePanel extends VBox {
 		changePersonalDataButton.setTranslateX(17);
 		changePersonalDataButton.setTranslateY(80);
 		changePersonalDataButton.setOnAction(e-> {
-			Client.mainCustomerInterfacePanel.setCenterInterfacePanel();
+			Client.mainCustomerInterfacePanel.setCenterChangePDInterfacePanel();
 		});
 		this.getChildren().add(changePersonalDataButton);
 	}
@@ -35,7 +36,7 @@ public class LeftCustomerInterfacePanel extends VBox {
 		addVehicleButton.setTranslateX(17);
 		addVehicleButton.setTranslateY(90);
 		addVehicleButton.setOnAction(e-> {
-			System.out.println("puADSADSADSADp");
+			Client.mainCustomerInterfacePanel.setCenterAddVehicleInterfacePanel();
 		});
 		this.getChildren().add(addVehicleButton);
 	}
@@ -46,6 +47,7 @@ public class LeftCustomerInterfacePanel extends VBox {
 		showVehicleFleetButton.setTranslateX(17);
 		showVehicleFleetButton.setTranslateY(100);
 		showVehicleFleetButton.setOnAction(e-> {
+			Client.mainCustomerInterfacePanel.setCenterShowVehicleFleetInterfacePanel();
 		});
 		this.getChildren().add(showVehicleFleetButton);
 	}
@@ -76,6 +78,7 @@ public class LeftCustomerInterfacePanel extends VBox {
 		addOrder.setTranslateX(17);
 		addOrder.setTranslateY(130);
 		addOrder.setOnAction(e-> {
+			Client.mainCustomerInterfacePanel.setCenterAddOrderInterfacePanel();
 		});
 		this.getChildren().add(addOrder);
 	}

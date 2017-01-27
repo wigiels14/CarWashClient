@@ -64,6 +64,13 @@ public class ChangePersonalDataPanel extends GridPane {
 		}
 	}
 
+	private void refreshTopCustomerInterfaceData() {
+		Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
+				.setFirstNameText();
+		Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
+				.setLastNameText();
+	}
+
 	private void setCustomerLastNameText() {
 		if (lastNameText == null) {
 			if (customer.getLastName() == null) {
@@ -138,6 +145,7 @@ public class ChangePersonalDataPanel extends GridPane {
 				String idNumber = Client.mainCustomerInterfacePanel.topCustomerInterfacePanel.getCustomer().getIdNumber();
 				String firstName = Client.mainCustomerInterfacePanel.topCustomerInterfacePanel.getCustomer().getFirstName();
 				sendChangeCustomerFirstName(idNumber, firstName);
+				refreshTopCustomerInterfaceData();
 				setMessageText("Data changed");
 			}else {
 				setMessageText("Incorrect data");
@@ -182,6 +190,7 @@ public class ChangePersonalDataPanel extends GridPane {
 				String lastName = Client.mainCustomerInterfacePanel.topCustomerInterfacePanel.getCustomer().getLastName();
 				sendChangeCustomerLastName(idNumber, lastName);
 				setCustomerLastNameText();
+				refreshTopCustomerInterfaceData();
 				setMessageText("Data changed");
 			}else {
 				setMessageText("Incorrect data");

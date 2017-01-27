@@ -1,9 +1,21 @@
 package Business.Person;
 
+import java.util.ArrayList;
+
+import Business.Vehicle.Vehicle;
 
 public class Customer implements PersonEntity {
 	private String id, customerPassword, firstName, lastName, pesel, idNumber;
 	private double accountBalance;
+	private final ArrayList<Vehicle> vehicleFleet = new ArrayList<Vehicle>();
+
+	public ArrayList<Vehicle> getVehicleFleet() {
+		return vehicleFleet;
+	}
+
+	public void addVehicle(Vehicle vehicle) {
+		vehicleFleet.add(vehicle);
+	}
 
 	public double getAccountBalance() {
 		return accountBalance;
