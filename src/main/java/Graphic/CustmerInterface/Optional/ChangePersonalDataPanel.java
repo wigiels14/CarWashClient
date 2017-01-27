@@ -158,7 +158,6 @@ public class ChangePersonalDataPanel extends GridPane {
 		changeFirstNameTextField = new TextField();
 		changeFirstNameTextField.setTranslateX(30);
 		changeFirstNameTextField.setTranslateY(40);
-		changeFirstNameTextField.setId("Field");
 		this.add(changeFirstNameTextField, 1, 0);
 	}
 
@@ -166,7 +165,6 @@ public class ChangePersonalDataPanel extends GridPane {
 		changeLastNameTextField = new TextField();
 		changeLastNameTextField.setTranslateX(30);
 		changeLastNameTextField.setTranslateY(40);
-		changeLastNameTextField.setId("Field");
 		this.add(changeLastNameTextField, 1, 1);
 	}
 
@@ -174,7 +172,6 @@ public class ChangePersonalDataPanel extends GridPane {
 		changePasswordTextField = new TextField();
 		changePasswordTextField.setTranslateX(30);
 		changePasswordTextField.setTranslateY(40);
-		changePasswordTextField.setId("Field");
 		this.add(changePasswordTextField, 1, 4);
 	}
 

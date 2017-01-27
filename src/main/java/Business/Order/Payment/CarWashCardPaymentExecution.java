@@ -3,23 +3,23 @@ package Business.Order.Payment;
 import Business.Order.Order;
 
 public class CarWashCardPaymentExecution implements PaymentExecution {
+	private Payment payment;
 	private Order order;
-	private Remmitance remmitance;
 
 	public void setOrder(Order order) {
 		this.order = order;
-	}
-
-	public void setRemmitance(Remmitance remmitance) {
-		this.remmitance = remmitance;
 	}
 
 	public Order getOrder() {
 		return order;
 	}
 
-	public Remmitance getRemmitance() {
-		return remmitance;
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
+
+	public Payment getPayment() {
+		return payment;
 	}
 
 	@Override
@@ -34,9 +34,9 @@ public class CarWashCardPaymentExecution implements PaymentExecution {
 	@Override
 	public boolean canExecutePayent() {
 		if (order.getCustomer().getAccountBalance() > order.getCost())
-			return false;
-		else
 			return true;
+		else
+			return false;
 	}
 
 	@Override

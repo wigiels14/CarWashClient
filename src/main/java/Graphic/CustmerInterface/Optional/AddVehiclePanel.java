@@ -43,7 +43,6 @@ public class AddVehiclePanel extends GridPane {
 		vehicleVINTextField = new TextField();
 		vehicleVINTextField.setTranslateX(30);
 		vehicleVINTextField.setTranslateY(20);
-		vehicleVINTextField.setId("Field");
 		this.add(vehicleVINTextField, 1, 0);
 	}
 
@@ -59,7 +58,6 @@ public class AddVehiclePanel extends GridPane {
 		vehicleMarkTextField = new TextField();
 		vehicleMarkTextField.setTranslateX(30);
 		vehicleMarkTextField.setTranslateY(40);
-		vehicleMarkTextField.setId("Field");
 		this.add(vehicleMarkTextField, 1, 1);
 	}
 
@@ -75,7 +73,6 @@ public class AddVehiclePanel extends GridPane {
 		vehicleModelTextField = new TextField();
 		vehicleModelTextField.setTranslateX(30);
 		vehicleModelTextField.setTranslateY(60);
-		vehicleModelTextField.setId("Field");
 		this.add(vehicleModelTextField, 1, 2);
 	}
 

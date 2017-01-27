@@ -1,21 +1,34 @@
 package Graphic.CustmerInterface;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
-import Starting.Client;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import Business.Order.Payment.CarWashCardPayment;
+import Business.Order.Payment.Payment;
 import Business.Person.Customer;
 import Business.Person.EntityFactory;
+import Business.Person.WashStationEmployee;
 import Business.Service.Service;
+import Starting.Client;
 
 public class TopCustomerInterfacePanel extends HBox {
 	private Customer customer;
 	private final ArrayList<Service> services = new ArrayList<Service>();
+	private final ArrayList<Payment> payments = new ArrayList<Payment>();
 	private EntityFactory entityFactory = new EntityFactory();;
 	Text idText, firstNameText, lastNameText, accountBalanceText;
 	Button endAppButton;
+
+	public ArrayList<Payment> getPayments() {
+		return payments;
+	}
+
+	public void addPayment(Payment payment) {
+		this.payments.add(payment);
+	}
 
 	public ArrayList<Service> getServices() {
 		return services;
@@ -26,6 +39,7 @@ public class TopCustomerInterfacePanel extends HBox {
 	}
 
 	public TopCustomerInterfacePanel() {
+		addPayment(new CarWashCardPayment());
 		setCustomer();
 		setEndAppButton();
 	}
