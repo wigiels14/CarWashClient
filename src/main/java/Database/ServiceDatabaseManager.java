@@ -54,5 +54,4 @@ public class ServiceDatabaseManager {
 
 		return services;
 	}
-
 }

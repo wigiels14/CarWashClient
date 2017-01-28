@@ -240,6 +240,20 @@ public class ChangePersonalDataPanel extends GridPane {
 		}
 	}
 
+	public void sendChangeCustomerAccountBalance(String idNumber,
+			String accountBalance) {
+		try {
+
+			ClientQuery clientQuery = new ClientQuery(
+					"changeCustomerAccountBalance");
+			clientQuery.parameters[0] = idNumber;
+			clientQuery.parameters[1] = accountBalance;
+			Client.out.writeObject(clientQuery);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void sendChangeCustomerLastName(String idNumber, String lastName) {
 		try {
 

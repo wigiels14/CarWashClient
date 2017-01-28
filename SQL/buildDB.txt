@@ -4,9 +4,7 @@ DROP TABLE SERVICE_ORDERS;
 DROP TABLE SERVICE;
 DROP TABLE CUSTMER_DISCOUNTS;
 DROP TABLE DISCOUNT;
-DROP TABLE REMMITANCE;
 DROP TABLE ORDERS;
-DROP TABLE PAYMENT;
 DROP TABLE VEHICLE;
 DROP TABLE CAR_STATION_EMPLOYEE;
 DROP TABLE CUSTOMER;
@@ -43,12 +41,6 @@ CREATE TABLE ORDERS(
 ID NUMERIC(10) NOT NULL PRIMARY KEY,
 VEHICLE_ID NUMERIC(10) REFERENCES VEHICLE(ID),
 STATE VARCHAR(30) NOT NULL
-);
-
-CREATE TABLE REMMITANCE(
-ID NUMERIC(10) NOT NULL PRIMARY KEY,
-PAYMENT VARCHAR(50) NOT NULL,
-ORDERS_ID NUMERIC(10) REFERENCES ORDERS(ID)
 );
 
 CREATE TABLE DISCOUNT(
@@ -110,7 +102,7 @@ CREATE FUNCTION create_customer(idNumber IN VARCHAR,pesel IN VARCHAR,customer_pa
 RETURNS void AS $$
 BEGIN
     INSERT INTO CUSTOMER(ID, CUSTOMER_PASSWORD, PESEL, ID_NUMBER, ACCOUNT_BALLANCE)
-    VALUES(nextval('customer_sequence'), customer_password, pesel, idNumber, 0);
+    VALUES(nextval('customer_sequence'), customer_password, pesel, idNumber, 300);
 END; 
 $$ LANGUAGE plpgsql;
 
@@ -120,6 +112,15 @@ RETURNS void AS $$
 BEGIN
     INSERT INTO VEHICLE(ID, VIN, MARK, MODEL, CUSTOMER_ID)
     VALUES(nextval('vehicle_sequence'), vin, mark, model, customer_id);
+END; 
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION update_customer_balance(customer_id IN NUMERIC, account_balance IN NUMERIC);
+CREATE FUNCTION update_customer_balance(customer_id IN NUMERIC, account_balance IN NUMERIC)
+RETURNS void AS $$
+BEGIN
+UPDATE CUSTOMER 
+ SET ACCOUNT_BALLANCE = account_balance;
 END; 
 $$ LANGUAGE plpgsql;
 
@@ -151,6 +152,24 @@ UPDATE CUSTOMER
  SET CUSTOMER_PASSWORD = customerPassword
  WHERE ID_NUMBER = customer_id;
  END; 
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION create_order(vehicle_id NUMERIC);
+CREATE FUNCTION  create_order(vehicle_id NUMERIC)
+RETURNS void AS $$
+BEGIN
+INSERT INTO ORDERS(ID, VEHICLE_ID, STATE)
+VALUES(nextval('order_sequence'), vehicle_id, 'active');
+ END; 
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION create_service_orders(service_id IN NUMERIC, order_id IN NUMERIC);
+CREATE FUNCTION create_service_orders(service_id IN NUMERIC, order_id IN NUMERIC)
+RETURNS void AS $$
+BEGIN
+INSERT INTO SERVICE_ORDERS(SERVICE_ID, ORDER_ID)
+VALUES(service_id, order_id);
+END; 
 $$ LANGUAGE plpgsql;
 
 
@@ -190,3 +209,24 @@ VALUES(nextval('service_sequence'), 'Vacuuming', 'ManualWashStationService', 7);
     
 INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
 VALUES(nextval('service_sequence'), 'Interior Wash', 'ManualWashStationService', 14);
+
+INSERT INTO DISCOUNT(ID, AMOUNT, DESCRIPTION)
+VALUES(nextval('discount_sequence'), 1, 'One dolar gratis');
+
+INSERT INTO DISCOUNT(ID, AMOUNT, DESCRIPTION)
+VALUES(nextval('discount_sequence'), 2, 'Two dolars gratis');
+
+INSERT INTO DISCOUNT(ID, AMOUNT, DESCRIPTION)
+VALUES(nextval('discount_sequence'), 3, 'Three dolars gratis');
+
+INSERT INTO SERVICE_DISCOUNTS(SERVICE_ID, DISCOUNT_ID)
+VALUES(1,1);
+
+INSERT INTO SERVICE_DISCOUNTS(SERVICE_ID, DISCOUNT_ID)
+VALUES(2,1);
+
+INSERT INTO SERVICE_DISCOUNTS(SERVICE_ID, DISCOUNT_ID)
+VALUES(2,2);
+
+INSERT INTO SERVICE_DISCOUNTS(SERVICE_ID, DISCOUNT_ID)
+VALUES(3,1);

@@ -35,14 +35,14 @@ public class AddVehiclePanel extends GridPane {
 		vehicleVINText = new Text("VIN: ");
 		vehicleVINText.setId("dataText");
 		vehicleVINText.setTranslateX(20);
-		vehicleVINText.setTranslateY(20);
+		vehicleVINText.setTranslateY(60);
 		this.add(vehicleVINText, 0, 0);
 	}
 
 	private void setVehicleVINTextField() {
 		vehicleVINTextField = new TextField();
 		vehicleVINTextField.setTranslateX(30);
-		vehicleVINTextField.setTranslateY(20);
+		vehicleVINTextField.setTranslateY(60);
 		this.add(vehicleVINTextField, 1, 0);
 	}
 
@@ -50,14 +50,14 @@ public class AddVehiclePanel extends GridPane {
 		vehicleMarkText = new Text("Mark: ");
 		vehicleMarkText.setId("dataText");
 		vehicleMarkText.setTranslateX(20);
-		vehicleMarkText.setTranslateY(40);
+		vehicleMarkText.setTranslateY(60);
 		this.add(vehicleMarkText, 0, 1);
 	}
 
 	private void setVehicleMarkTextField() {
 		vehicleMarkTextField = new TextField();
 		vehicleMarkTextField.setTranslateX(30);
-		vehicleMarkTextField.setTranslateY(40);
+		vehicleMarkTextField.setTranslateY(60);
 		this.add(vehicleMarkTextField, 1, 1);
 	}
 

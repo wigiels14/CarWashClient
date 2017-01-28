@@ -15,13 +15,14 @@ import Business.Order.Payment.Remmitance;
 import Business.Service.Service;
 import Business.Vehicle.Vehicle;
 import Server.ClientQuery;
+import javafx.scene.control.ComboBox;
 import Starting.Client;
 
 public class AddOrderPanel extends GridPane {
 	Text carText, serviceText, paymentText, message;
 	private CarWashCardPaymentExecution carWashCardPaymentExecution;
 	Button acceptButton;
-	ChoiceBox carChoiceBox, serviceChoiceBox, paymentChoiceBox;
+	ComboBox carChoiceBox, serviceChoiceBox, paymentChoiceBox;
 
 	public void setCarWashCardPaymentExecution(
 			CarWashCardPaymentExecution carWashCardPaymentExecution) {
@@ -33,12 +34,11 @@ public class AddOrderPanel extends GridPane {
 	}
 
 	public void initAll() {
-		createCorrectDataText();
+		createCorrectDataText("");
 		setCarText();
 		setCarChoiceBox();
 		setPaymentText();
 		setPaymentChoiceBox();
-		sendFetchAllServices();
 		createSingUpButton();
 
 	}
@@ -56,16 +56,13 @@ public class AddOrderPanel extends GridPane {
 
 	private void createPaymentExecution(Order order) {
 		carWashCardPaymentExecution = new CarWashCardPaymentExecution();
+		System.out.println("PLATN@SC: " + paymentChoiceBox.getValue());
 		carWashCardPaymentExecution.setPayment((Payment) paymentChoiceBox
 				.getValue());
+		carWashCardPaymentExecution
+				.setCustomer(Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
+						.getCustomer());
 		carWashCardPaymentExecution.setOrder(order);
-	}
-
-	private void createRemmitance(Order order) {
-		Remmitance remmitance = new Remmitance();
-		remmitance.setOrder(order);
-		remmitance.setPayment(((Payment) paymentChoiceBox.getValue())
-				.toString());
 	}
 
 	private void setCarText() {
@@ -105,7 +102,7 @@ public class AddOrderPanel extends GridPane {
 
 	private void setPaymentChoiceBox() {
 		if (paymentChoiceBox == null) {
-			paymentChoiceBox = new ChoiceBox<Payment>(
+			paymentChoiceBox = new ComboBox<Payment>(
 					FXCollections
 							.observableList(Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
 									.getPayments()));
@@ -113,11 +110,6 @@ public class AddOrderPanel extends GridPane {
 			paymentChoiceBox.setTranslateX(20);
 			paymentChoiceBox.setTranslateY(60);
 			this.add(paymentChoiceBox, 1, 2);
-		} else {
-			paymentChoiceBox = new ChoiceBox<Payment>(
-					FXCollections
-							.observableList(Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
-									.getPayments()));
 		}
 	}
 
@@ -125,19 +117,16 @@ public class AddOrderPanel extends GridPane {
 		ArrayList<Vehicle> vehicleFleet = Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
 				.getCustomer().getVehicleFleet();
 		if (carChoiceBox == null) {
-			carChoiceBox = new ChoiceBox<Vehicle>(
+			carChoiceBox = new ComboBox<Vehicle>(
 					FXCollections.observableList(vehicleFleet));
 			carChoiceBox.setId("smallDataText");
 			carChoiceBox.setTranslateX(20);
 			carChoiceBox.setTranslateY(60);
 			this.add(carChoiceBox, 1, 0);
-		} else {
-			carChoiceBox = new ChoiceBox<Vehicle>(
-					FXCollections.observableList(vehicleFleet));
 		}
 	}
 
-	private void sendFetchAllServices() {
+	public void sendFetchAllServices() {
 		try {
 			System.out.println("WYSYLA");
 			ClientQuery clientQuery = new ClientQuery("fetchAllServices");
@@ -149,7 +138,7 @@ public class AddOrderPanel extends GridPane {
 
 	private void setServiceChoiceBox() {
 		if (serviceChoiceBox == null) {
-			serviceChoiceBox = new ChoiceBox<Service>(
+			serviceChoiceBox = new ComboBox<Service>(
 					FXCollections
 							.observableList(Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
 									.getServices()));
@@ -157,11 +146,6 @@ public class AddOrderPanel extends GridPane {
 			serviceChoiceBox.setTranslateX(20);
 			serviceChoiceBox.setTranslateY(60);
 			this.add(serviceChoiceBox, 1, 1);
-		} else {
-			serviceChoiceBox = new ChoiceBox<Service>(
-					FXCollections
-							.observableList(Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
-									.getServices()));
 		}
 	}
 
@@ -174,20 +158,82 @@ public class AddOrderPanel extends GridPane {
 		acceptButton.setOnAction(e -> {
 			createPaymentExecution(createOrder());
 			if(carWashCardPaymentExecution.executePayment()) {
+				System.out.println("PAJMENTSY: " + Client.mainCustomerInterfacePanel.topCustomerInterfacePanel.getPayments().size());
+				String vehicleID = ((Vehicle)carChoiceBox.getValue()).getId();
+				sendCreateOrder(vehicleID);
 				message.setText("Operation realized");
+				System.out.println("PAJMENTSY: " + Client.mainCustomerInterfacePanel.topCustomerInterfacePanel.getPayments().size());
+				paymentChoiceBox.disableProperty();
 			}else {
-				message.setText("Operacja could not be realized");
+				createCorrectDataText("Operacja could not be realized");
 			}
 		});
 		this.add(acceptButton, 1, 3);
 	}
 
-	private void createCorrectDataText() {
-		message = new Text("");
-		message.setId("wrongDataText");
-		message.setTranslateX(170);
-		message.setTranslateY(91);
-		this.add(message, 1, 3);
+	public void sendCreateServiceOrders() {
+		String serviceID = ((Service) serviceChoiceBox.getValue()).getId();
+		String orderID = carWashCardPaymentExecution.getOrder().getId();
+
+		System.out.println("serviceID " + serviceID + ", orderID: " + orderID);
+
+		try {
+
+			ClientQuery clientQuery = new ClientQuery("createServiceOrders");
+			clientQuery.parameters[0] = serviceID;
+			clientQuery.parameters[1] = orderID;
+			Client.out.writeObject(clientQuery);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void sendFetchVehicleID(String vehicleVIN) {
+		try {
+
+			ClientQuery clientQuery = new ClientQuery("fetchVehicleID");
+			clientQuery.parameters[1] = vehicleVIN;
+			Client.out.writeObject(clientQuery);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void sendFetchOrderID(String vehicleID) {
+		try {
+
+			ClientQuery clientQuery = new ClientQuery("fetchOrderID");
+			clientQuery.parameters[0] = vehicleID;
+			Client.out.writeObject(clientQuery);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void sendCreateOrder(String vehicleID) {
+		try {
+
+			ClientQuery clientQuery = new ClientQuery("createOrder");
+			clientQuery.parameters[0] = vehicleID;
+			System.out.println("wysylam: " + clientQuery.parameters[0]);
+			Client.out.writeObject(clientQuery);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		sendFetchVehicleID(((Vehicle) carChoiceBox.getValue()).getVin());
+	}
+
+	private void createCorrectDataText(String text) {
+		if (message == null) {
+			message = new Text("");
+			message.setId("wrongDataText");
+			message.setTranslateX(170);
+			message.setTranslateY(91);
+			this.add(message, 1, 3);
+		} else {
+			message.setText(text);
+		}
 	}
 
 }

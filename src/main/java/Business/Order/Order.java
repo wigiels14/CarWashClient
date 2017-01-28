@@ -9,6 +9,7 @@ import Business.Service.Service;
 import Business.Vehicle.Vehicle;
 
 public class Order {
+	private String id;
 	private Customer customer;
 	private PaymentExecution paymentExecution;
 	private String state;
@@ -16,6 +17,14 @@ public class Order {
 	private Service service;
 	private final ArrayList<Discount> discount = new ArrayList<>();
 	private Vehicle vehicle;
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getId() {
+		return id;
+	}
 
 	public void setPayment(PaymentExecution payment) {
 		paymentExecution = payment;

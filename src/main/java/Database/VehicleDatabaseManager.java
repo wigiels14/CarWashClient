@@ -61,4 +61,32 @@ public class VehicleDatabaseManager {
 		}
 		return false;
 	}
+
+	public String fetchVehicleIDByVIN(String vehicleVIN) {
+		String query = "SELECT ID FROM VEHICLE WHERE VIN = ?";
+		System.out.println("VINs: " + vehicleVIN);
+
+		PreparedStatement myStatement;
+		ResultSet queryResult = null;
+		try {
+			myStatement = Server.complexDatabaseManager.CONNECTION
+					.prepareStatement(query);
+			myStatement.setString(1, vehicleVIN);
+
+			queryResult = myStatement.executeQuery();
+
+			String id = null;
+			System.out.println("MAMAM" + queryResult.toString());
+			while (queryResult.next()) {
+				id = queryResult.getString("ID");
+			}
+			System.out.println("ID: " + id);
+			return id;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

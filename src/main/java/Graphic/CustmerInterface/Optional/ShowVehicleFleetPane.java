@@ -34,7 +34,7 @@ public class ShowVehicleFleetPane extends GridPane {
 		Text vinText = new Text("VIN: " + vehicle.getVin());
 		vinText.setId("dataText");
 		vinText.setTranslateX(20);
-		vinText.setTranslateY(20);
+		vinText.setTranslateY(60);
 		vinTexts.add(vinText);
 		this.add(vinText, i, j);
 	}
@@ -43,7 +43,7 @@ public class ShowVehicleFleetPane extends GridPane {
 		Text vinText = new Text("Mark: " + vehicle.getBrand());
 		vinText.setId("dataText");
 		vinText.setTranslateX(40);
-		vinText.setTranslateY(20);
+		vinText.setTranslateY(60);
 		vinTexts.add(vinText);
 		this.add(vinText, i, j);
 	}
@@ -52,7 +52,7 @@ public class ShowVehicleFleetPane extends GridPane {
 		Text vinText = new Text("Model: " + vehicle.getCarModel());
 		vinText.setId("dataText");
 		vinText.setTranslateX(60);
-		vinText.setTranslateY(20);
+		vinText.setTranslateY(60);
 		vinTexts.add(vinText);
 		this.add(vinText, i, j);
 	}

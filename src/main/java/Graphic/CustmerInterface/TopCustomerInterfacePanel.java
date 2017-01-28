@@ -17,10 +17,19 @@ import Starting.Client;
 public class TopCustomerInterfacePanel extends HBox {
 	private Customer customer;
 	private final ArrayList<Service> services = new ArrayList<Service>();
+	private ArrayList<Service> serviceOrders = new ArrayList<Service>();
 	private final ArrayList<Payment> payments = new ArrayList<Payment>();
 	private EntityFactory entityFactory = new EntityFactory();;
 	Text idText, firstNameText, lastNameText, accountBalanceText;
 	Button endAppButton;
+
+	public void setServiceOrders(ArrayList<Service> serviceOrders) {
+		this.serviceOrders = serviceOrders;
+	}
+
+	public ArrayList<Service> getServiceOrders() {
+		return serviceOrders;
+	}
 
 	public ArrayList<Payment> getPayments() {
 		return payments;
@@ -86,12 +95,17 @@ public class TopCustomerInterfacePanel extends HBox {
 	}
 
 	public void accountBalaceText() {
-		accountBalanceText = new Text("Account balance: "
-				+ customer.getAccountBalance());
-		accountBalanceText.setId("registerText");
-		accountBalanceText.setTranslateX(130);
-		accountBalanceText.setTranslateY(30);
-		this.getChildren().add(accountBalanceText);
+		if (accountBalanceText == null) {
+			accountBalanceText = new Text("Account balance: "
+					+ customer.getAccountBalance());
+			accountBalanceText.setId("registerText");
+			accountBalanceText.setTranslateX(130);
+			accountBalanceText.setTranslateY(30);
+			this.getChildren().add(accountBalanceText);
+		} else {
+			accountBalanceText.setText("Account balance: "
+					+ customer.getAccountBalance());
+		}
 	}
 
 	public void setEndAppButton() {

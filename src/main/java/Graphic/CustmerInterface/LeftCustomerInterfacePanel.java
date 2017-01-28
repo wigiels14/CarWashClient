@@ -1,5 +1,6 @@
 package Graphic.CustmerInterface;
 
+import Business.Person.Customer;
 import Business.Vehicle.Vehicle;
 import Starting.Client;
 import javafx.scene.control.Button;
@@ -58,6 +59,9 @@ public class LeftCustomerInterfacePanel extends VBox {
 		showActiveOrders.setTranslateX(17);
 		showActiveOrders.setTranslateY(110);
 		showActiveOrders.setOnAction(e-> {
+			Client.mainCustomerInterfacePanel.status = new String("1");
+			Customer customer = Client.mainCustomerInterfacePanel.topCustomerInterfacePanel.getCustomer();
+			Client.mainCustomerInterfacePanel.showActiveOrdersPanel.sendFetchOrdersByCustomerID(customer.getId());
 		});
 		this.getChildren().add(showActiveOrders);
 	}
@@ -68,6 +72,9 @@ public class LeftCustomerInterfacePanel extends VBox {
 		showOrderHistory.setTranslateX(17);
 		showOrderHistory.setTranslateY(120);
 		showOrderHistory.setOnAction(e-> {
+			Client.mainCustomerInterfacePanel.status = new String("2");
+			Customer customer = Client.mainCustomerInterfacePanel.topCustomerInterfacePanel.getCustomer();
+			Client.mainCustomerInterfacePanel.showActiveOrdersPanel.sendFetchOrdersByCustomerID(customer.getId());
 		});
 		this.getChildren().add(showOrderHistory);
 	}

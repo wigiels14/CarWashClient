@@ -92,7 +92,109 @@ public class ConnectedClient extends Thread {
 			if (((ClientQuery) clientQuery).type.equals("fetchAllServices")) {
 				proceedFetchAllServices((ClientQuery) clientQuery);
 			}
+			if (((ClientQuery) clientQuery).type.equals("createOrder")) {
+				proceedcreateOrder((ClientQuery) clientQuery);
+			}
+			if (((ClientQuery) clientQuery).type.equals("fetchOrderID")) {
+				proceedfetchOrderID((ClientQuery) clientQuery);
+			}
+			if (((ClientQuery) clientQuery).type.equals("fetchVehicleID")) {
+				proceedfetchVehicleID((ClientQuery) clientQuery);
+			}
+			if (((ClientQuery) clientQuery).type.equals("createServiceOrders")) {
+				proceedCreateServiceOrders((ClientQuery) clientQuery);
+			}
+			if (((ClientQuery) clientQuery).type
+					.equals("fetchOrdersByCustomerID")) {
+				proceedFetchOrdersByCustomerID((ClientQuery) clientQuery);
+			}
+			if (((ClientQuery) clientQuery).type
+					.equals("fetchServiceOrdersByCustomerID")) {
+				proceedFetchServiceOrdersByCustomerID((ClientQuery) clientQuery);
+			}
+			if (((ClientQuery) clientQuery).type
+					.equals("changeCustomerAccountBalance")) {
+				proceedChangeAccountBalance((ClientQuery) clientQuery);
+			}
 		}
+	}
+
+	private void proceedChangeAccountBalance(ClientQuery clientQuery) {
+		String customerID = clientQuery.parameters[0];
+		String accountBalance = clientQuery.parameters[1];
+
+		System.out.println("ZMIENIAM WART@CSC");
+
+		Server.complexDatabaseManager.customerAccountDatabaseManager
+				.updateCustomerAccountBalance(customerID, accountBalance);
+	}
+
+	private void proceedFetchServiceOrdersByCustomerID(ClientQuery clientQuery) {
+		String customerID = clientQuery.parameters[0];
+
+		ArrayList<String[]> data = Server.complexDatabaseManager.orderDatabaseManager
+				.fetchServiceOrdersByCustomerID(customerID);
+
+		ArrayList<Object> objects = new ArrayList<Object>();
+		objects.addAll(data);
+
+		ClientQuery response = (new ClientQuery(
+				"fetchServiceOrdersByCustomerID"));
+		response.setAdditionalObjects(objects);
+		System.out.println("Wyszukaem fetchServiceOrdersByCustomerID");
+		sendResponce(response);
+	}
+
+	private void proceedFetchOrdersByCustomerID(ClientQuery clientQuery) {
+		String customerID = clientQuery.parameters[0];
+
+		ArrayList<String[]> data = Server.complexDatabaseManager.orderDatabaseManager
+				.getOrdersByCustomerID(customerID);
+
+		ArrayList<Object> objects = new ArrayList<Object>();
+		objects.addAll(data);
+
+		ClientQuery response = (new ClientQuery("fetchOrdersByCustomerID"));
+		response.setAdditionalObjects(objects);
+		sendResponce(response);
+	}
+
+	private void proceedCreateServiceOrders(ClientQuery clientQuery) {
+		String serviceID = clientQuery.parameters[0];
+		String orderID = clientQuery.parameters[1];
+		System.out.println("DANE: " + serviceID + " " + orderID);
+		Server.complexDatabaseManager.orderDatabaseManager.createServiceOrders(
+				serviceID, orderID);
+	}
+
+	private void proceedfetchVehicleID(ClientQuery clientQuery) {
+		String vehicleVIN = clientQuery.parameters[1];
+		String vehicleID = Server.complexDatabaseManager.vehicleDatabaseManager
+				.fetchVehicleIDByVIN(vehicleVIN);
+
+		ClientQuery response = (new ClientQuery("fetchVehicleID"));
+		response.parameters[0] = vehicleID;
+		response.parameters[1] = vehicleVIN;
+		sendResponce(response);
+	}
+
+	private void proceedfetchOrderID(ClientQuery clientQuery) {
+		String vehicleID = clientQuery.parameters[0];
+
+		String orderID = Server.complexDatabaseManager.orderDatabaseManager
+				.getOrderByVehicleID(vehicleID);
+
+		ClientQuery response = (new ClientQuery("fetchOrderID"));
+		response.parameters[0] = orderID;
+		sendResponce(response);
+	}
+
+	private void proceedcreateOrder(ClientQuery clientQuery) {
+		String vehicleID = clientQuery.parameters[0];
+
+		System.out.println("Odbieram: " + vehicleID);
+		Server.complexDatabaseManager.orderDatabaseManager
+				.createOrder(vehicleID);
 	}
 
 	private void proceedFetchAllServices(ClientQuery clientQuery) {

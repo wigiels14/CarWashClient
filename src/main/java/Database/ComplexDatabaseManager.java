@@ -10,6 +10,7 @@ public class ComplexDatabaseManager {
 	public EmployeeDatabaseManager employeeDatabaseManager;
 	public ServiceDatabaseManager serviceDatabaseManager;
 	public PaymentDatabaseManager paymentDatabaseManager;
+	public OrderDatabaseManager orderDatabaseManager;
 	public DatabaseConnection databaseConnection;
 	public final Connection CONNECTION;
 
@@ -50,6 +51,7 @@ public class ComplexDatabaseManager {
 		employeeDatabaseManager = new EmployeeDatabaseManager();
 		serviceDatabaseManager = new ServiceDatabaseManager();
 		paymentDatabaseManager = new PaymentDatabaseManager();
+		orderDatabaseManager = new OrderDatabaseManager();
 
 	}
 

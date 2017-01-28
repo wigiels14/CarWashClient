@@ -4,6 +4,8 @@ import javafx.scene.layout.BorderPane;
 import Graphic.CustmerInterface.Optional.AddOrderPanel;
 import Graphic.CustmerInterface.Optional.AddVehiclePanel;
 import Graphic.CustmerInterface.Optional.ChangePersonalDataPanel;
+import Graphic.CustmerInterface.Optional.ShowActiveOrdersPanel;
+import Graphic.CustmerInterface.Optional.ShowOrderHistory;
 import Graphic.CustmerInterface.Optional.ShowVehicleFleetPane;
 
 public class MainCustomerInterfacePanel extends BorderPane {
@@ -13,6 +15,9 @@ public class MainCustomerInterfacePanel extends BorderPane {
 	public AddVehiclePanel addVehiclePanel;
 	public ShowVehicleFleetPane showVehicleFleetPane;
 	public AddOrderPanel addOrderPanel;
+	public ShowActiveOrdersPanel showActiveOrdersPanel;
+	public ShowOrderHistory showOrderHistory;
+	public String status;
 
 	public MainCustomerInterfacePanel() {
 		leftCustomerInterfacePanel = new LeftCustomerInterfacePanel();
@@ -21,6 +26,10 @@ public class MainCustomerInterfacePanel extends BorderPane {
 		addVehiclePanel = new AddVehiclePanel();
 		showVehicleFleetPane = new ShowVehicleFleetPane();
 		addOrderPanel = new AddOrderPanel();
+		showActiveOrdersPanel = new ShowActiveOrdersPanel();
+		showOrderHistory = new ShowOrderHistory();
+
+		addOrderPanel.sendFetchAllServices();
 		setStyle("-fx-background-image: url('tlo.png');"
 				+ "-fx-background-radius: 50px;");
 
@@ -56,4 +65,15 @@ public class MainCustomerInterfacePanel extends BorderPane {
 		addOrderPanel.initAll();
 		this.setCenter(addOrderPanel);
 	}
+
+	public void setCenterShowActiveOrdersInterfacePanel() {
+		if (status.equals("1")) {
+			showActiveOrdersPanel.initAll();
+			this.setCenter(showActiveOrdersPanel);
+		} else {
+			showOrderHistory.initAll();
+			this.setCenter(showOrderHistory);
+		}
+	}
+
 }

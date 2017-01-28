@@ -3,8 +3,9 @@ package Business.Order.Payment;
 public class CarWashCardPayment implements Payment {
 
 	@Override
-	public void executePayment() {
-
+	public double executePayment(double accountBalace, double serviceCost) {
+		double newAccountBalance = accountBalace - serviceCost;
+		return newAccountBalance;
 	}
 
 	@Override

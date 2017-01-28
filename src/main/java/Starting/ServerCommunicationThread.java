@@ -3,14 +3,12 @@ package Starting;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import Business.Order.Order;
 import Business.Person.Customer;
-import Business.Service.ManualWashStationService;
-import Business.Service.Service;
-import Business.Service.SteamWashStationService;
-import Business.Service.TouchlessWashStationService;
-import Business.Service.TunelWashStationService;
+import Business.Service.*;
 import Business.Vehicle.Vehicle;
 import Server.ClientQuery;
+import Server.Server;
 import javafx.application.Platform;
 
 public class ServerCommunicationThread extends Thread {
@@ -39,12 +37,111 @@ public class ServerCommunicationThread extends Thread {
 				if (((ClientQuery) response).type.equals("fetchAllServices")) {
 					proceedFetchAllServices((ClientQuery) response);
 				}
+				if (((ClientQuery) response).type.equals("fetchOrderID")) {
+					proceedfetchOrderID((ClientQuery) response);
+				}
+				if (((ClientQuery) response).type.equals("fetchVehicleID")) {
+					proceedfetchVehiceID((ClientQuery) response);
+				}
+				if (((ClientQuery) response).type.equals("createServiceOrders")) {
+					proceedFetchOrdersByCustomerID((ClientQuery) response);
+				}
+				if (((ClientQuery) response).type
+						.equals("fetchOrdersByCustomerID")) {
+					proceedFetchOrdersByCustomerID((ClientQuery) response);
+				}
+				if (((ClientQuery) response).type
+						.equals("fetchServiceOrdersByCustomerID")) {
+					proceedFetchServiceOrdersByCustomerID((ClientQuery) response);
+				}
 			}
 		}
 	}
 
+	private void proceedFetchServiceOrdersByCustomerID(ClientQuery response) {
+		ArrayList<Order> finalOrders = new ArrayList<Order>();
+		ArrayList<Order> orders = Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
+				.getCustomer().getOrders();
+
+		ArrayList<Service> services = Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
+				.getServices();
+		
+		for (Object object : response.getAdditionalObjects()) {
+			String[] convertedObject = (String[]) object;
+			String serviceID = convertedObject[0];
+			String orderID = convertedObject[1];
+			for (Order order : orders) {
+				if (order.getId().equals(orderID)) {
+					for (Service service : services) {
+						if (service.getId().equals(serviceID)) {
+							order.setService(service);
+							break;
+						}
+					}
+					finalOrders.add(order);
+				}
+			}
+		}
+		Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
+		.getCustomer().setOrders(finalOrders);
+		Platform.runLater(() ->Client.mainCustomerInterfacePanel.setCenterShowActiveOrdersInterfacePanel());
+	}
+
+	private void proceedFetchOrdersByCustomerID(ClientQuery response) {
+		ArrayList<Order> orders = new ArrayList<Order>();
+		for (Object object : response.getAdditionalObjects()) {
+			String[] convertedObject = (String[]) object;
+			System.out.println("order id: " + convertedObject[0]);
+
+			Order order = new Order();
+			order.setId(convertedObject[0]);
+			for (Vehicle vehicle : Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
+					.getCustomer().getVehicleFleet()) {
+				if (vehicle.getId().equals(convertedObject[1]))
+					order.setVehicle(vehicle);
+			}
+			order.setState(convertedObject[2]);
+			orders.add(order);
+		}
+		Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
+				.getCustomer().setOrders(orders);
+
+		Client.mainCustomerInterfacePanel.showActiveOrdersPanel
+				.sendFetchServiceOrdersByCustomerID(Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
+						.getCustomerID());
+
+	}
+
+	private void proceedfetchVehiceID(ClientQuery response) {
+		Customer customer = Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
+				.getCustomer();
+
+		String vehicleVIN = response.parameters[1];
+		String vehicleID = response.parameters[0];
+
+		System.out.println("VEH ID: " + vehicleID);
+
+		ArrayList<Vehicle> vehicles = customer.getVehicleFleet();
+
+		for (Vehicle vehicle : vehicles) {
+			if (vehicle.getVin().equals(vehicleVIN)) {
+				vehicle.setId(vehicleID);
+			}
+		}
+		Client.mainCustomerInterfacePanel.addOrderPanel
+				.sendFetchOrderID(vehicleID);
+	}
+
+	private void proceedfetchOrderID(ClientQuery response) {
+		System.out.println("Dostaled ID Orderu: " + response.parameters[0]);
+		Client.mainCustomerInterfacePanel.addOrderPanel
+				.getCarWashCardPaymentExecution().getOrder()
+				.setId(response.parameters[0]);
+		Client.mainCustomerInterfacePanel.addOrderPanel
+				.sendCreateServiceOrders();
+	}
+
 	private void proceedFetchAllServices(ClientQuery response) {
-		System.out.println("JESTEM TU ");
 		for (Object object : response.getAdditionalObjects()) {
 			String[] convertedObject = (String[]) object;
 			Service covertedService = null;

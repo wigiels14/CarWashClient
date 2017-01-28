@@ -2,5 +2,5 @@ package Business.Order.Payment;
 
 public interface Payment {
 
-	public void executePayment();
+	public double executePayment(double accountBalace, double serviceCost);
 }

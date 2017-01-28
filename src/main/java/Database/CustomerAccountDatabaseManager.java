@@ -44,6 +44,29 @@ public class CustomerAccountDatabaseManager {
 			return false;
 		}
 
+		private void changeAccountBalance(String customerID,
+				String accountBalace) {
+			String query = "SELECT update_customer_balance(?,?);";
+
+			PreparedStatement myStatement;
+			ResultSet queryResult = null;
+			try {
+				myStatement = Server.complexDatabaseManager.CONNECTION
+						.prepareStatement(query);
+
+				double doubleBalance = Double.parseDouble(accountBalace);
+
+				myStatement.setInt(1, Integer.decode(customerID));
+				myStatement.setInt(2, (int) doubleBalance);
+
+				queryResult = myStatement.executeQuery();
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 		boolean isCustomerAlreadyRegistered(String idNumber) {
 			String query = "SELECT COUNT(*) AS amount FROM CUSTOMER WHERE ID_NUMBER = ?";
 
@@ -178,15 +201,20 @@ public class CustomerAccountDatabaseManager {
 		}
 	}
 
+	public void updateCustomerAccountBalance(String customerID,
+			String accountBalance) {
+		customerAccountManagerProxy.changeAccountBalance(customerID,
+				accountBalance);
+	}
+
 	public boolean isCustomerInSystemDatabase(String idNumber, String password) {
 		return customerAccountManagerProxy.isCustomerInSystemDatabase(idNumber,
 				password);
 	}
-	
+
 	public void changeCustomerPassword(String idNumber, String password) {
 		customerAccountManagerProxy.changeCustomerPassword(idNumber, password);
 	}
-
 
 	public void changeCustomerLastName(String idNumber, String lastName) {
 		customerAccountManagerProxy.changeCustomerLastName(idNumber, lastName);
