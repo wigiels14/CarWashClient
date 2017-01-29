@@ -3,7 +3,6 @@ package Business.Order;
 import java.util.ArrayList;
 
 import Business.Order.Discount.Discount;
-import Business.Order.Payment.PaymentExecution;
 import Business.Person.Customer;
 import Business.Service.Service;
 import Business.Vehicle.Vehicle;
@@ -11,12 +10,20 @@ import Business.Vehicle.Vehicle;
 public class Order {
 	private String id;
 	private Customer customer;
-	private PaymentExecution paymentExecution;
 	private String state;
 	private double cost;
 	private Service service;
 	private final ArrayList<Discount> discount = new ArrayList<>();
 	private Vehicle vehicle;
+
+	public Order(OrderBuilder orderBuilder) {
+		this.id = orderBuilder.id;
+		this.customer = orderBuilder.customer;
+		this.state = orderBuilder.state;
+		this.cost = orderBuilder.cost;
+		this.service = orderBuilder.service;
+		this.vehicle = orderBuilder.vehicle;
+	}
 
 	public void setId(String id) {
 		this.id = id;
@@ -24,14 +31,6 @@ public class Order {
 
 	public String getId() {
 		return id;
-	}
-
-	public void setPayment(PaymentExecution payment) {
-		paymentExecution = payment;
-	}
-
-	public PaymentExecution getPayment() {
-		return paymentExecution;
 	}
 
 	public void setState(String state) {
@@ -50,8 +49,8 @@ public class Order {
 		return service;
 	}
 
-	public void setVehicle(Vehicle vehicle) {
-		this.vehicle = vehicle;
+	public void setVehicle(Vehicle string) {
+		this.vehicle = string;
 	}
 
 	public Vehicle getVehicle() {
@@ -80,6 +79,50 @@ public class Order {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+
+	public static class OrderBuilder {
+		private String id;
+		private Customer customer;
+		private String state;
+		private double cost;
+		private Service service;
+		private final ArrayList<Discount> discount = new ArrayList<>();
+		private Vehicle vehicle;
+
+		public OrderBuilder createVehicle(Vehicle vehicle) {
+			this.vehicle = vehicle;
+			return this;
+		}
+
+		public OrderBuilder createService(Service service) {
+			this.service = service;
+			return this;
+		}
+
+		public OrderBuilder createCost(double cost) {
+			this.cost = cost;
+			return this;
+		}
+
+		public OrderBuilder createState(String state) {
+			this.state = state;
+			return this;
+		}
+
+		public OrderBuilder createID(String id) {
+			this.id = id;
+			return this;
+		}
+
+		public OrderBuilder createCustomer(Customer customer) {
+			this.customer = customer;
+			return this;
+		}
+
+		public Order build() {
+			return new Order(this);
+		}
 	}
 
 }

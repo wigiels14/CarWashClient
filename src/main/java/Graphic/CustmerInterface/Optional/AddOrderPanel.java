@@ -44,19 +44,19 @@ public class AddOrderPanel extends GridPane {
 	}
 
 	public Order createOrder() {
-		Order order = new Order();
-		order.setCustomer(Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
-				.getCustomer());
-		order.setCost(((Service) serviceChoiceBox.getValue()).getCost());
-		order.setService((Service) serviceChoiceBox.getValue());
-		order.setVehicle((Vehicle) carChoiceBox.getValue());
-		order.setState("Active");
+		Order order = new Order.OrderBuilder()
+				.createCustomer(
+						Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
+								.getCustomer())
+				.createCost(((Service) serviceChoiceBox.getValue()).getCost())
+				.createService((Service) serviceChoiceBox.getValue())
+				.createVehicle((Vehicle) carChoiceBox.getValue())
+				.createState("Active").build();
 		return order;
 	}
 
 	private void createPaymentExecution(Order order) {
 		carWashCardPaymentExecution = new CarWashCardPaymentExecution();
-		System.out.println("PLATN@SC: " + paymentChoiceBox.getValue());
 		carWashCardPaymentExecution.setPayment((Payment) paymentChoiceBox
 				.getValue());
 		carWashCardPaymentExecution
@@ -128,7 +128,6 @@ public class AddOrderPanel extends GridPane {
 
 	public void sendFetchAllServices() {
 		try {
-			System.out.println("WYSYLA");
 			ClientQuery clientQuery = new ClientQuery("fetchAllServices");
 			Client.out.writeObject(clientQuery);
 		} catch (IOException e) {
@@ -158,12 +157,11 @@ public class AddOrderPanel extends GridPane {
 		acceptButton.setOnAction(e -> {
 			createPaymentExecution(createOrder());
 			if(carWashCardPaymentExecution.executePayment()) {
-				System.out.println("PAJMENTSY: " + Client.mainCustomerInterfacePanel.topCustomerInterfacePanel.getPayments().size());
 				String vehicleID = ((Vehicle)carChoiceBox.getValue()).getId();
 				sendCreateOrder(vehicleID);
-				message.setText("Operation realized");
-				System.out.println("PAJMENTSY: " + Client.mainCustomerInterfacePanel.topCustomerInterfacePanel.getPayments().size());
 				paymentChoiceBox.disableProperty();
+				
+				createCorrectDataText("Operacja has been realized");
 			}else {
 				createCorrectDataText("Operacja could not be realized");
 			}
@@ -174,8 +172,6 @@ public class AddOrderPanel extends GridPane {
 	public void sendCreateServiceOrders() {
 		String serviceID = ((Service) serviceChoiceBox.getValue()).getId();
 		String orderID = carWashCardPaymentExecution.getOrder().getId();
-
-		System.out.println("serviceID " + serviceID + ", orderID: " + orderID);
 
 		try {
 
@@ -215,7 +211,6 @@ public class AddOrderPanel extends GridPane {
 
 			ClientQuery clientQuery = new ClientQuery("createOrder");
 			clientQuery.parameters[0] = vehicleID;
-			System.out.println("wysylam: " + clientQuery.parameters[0]);
 			Client.out.writeObject(clientQuery);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -227,7 +222,7 @@ public class AddOrderPanel extends GridPane {
 	private void createCorrectDataText(String text) {
 		if (message == null) {
 			message = new Text("");
-			message.setId("wrongDataText");
+			message.setId("dataText");
 			message.setTranslateX(170);
 			message.setTranslateY(91);
 			this.add(message, 1, 3);

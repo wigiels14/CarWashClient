@@ -21,8 +21,7 @@ public class ServiceFactory {
 				new ManualWashStationService());
 	}
 
-	public static Service getInstance(final String s)
-			throws CloneNotSupportedException {
+	public static Service getInstance(final String s) {
 		return (Service) services.get(s).clone();
 	}
 }
