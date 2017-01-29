@@ -28,11 +28,15 @@ public class OrderRepository implements CustomRepository {
 		return null;
 	}
 
-	public void addOrder(Order o) {
-		this.orders.add(o);
+	@Override
+	public void add(Object o) {
+		Order order = (Order) o;
+		this.orders.add(order);
 	}
 
-	public void removeOrder(Order o) {
+	@Override
+	public void remove(Object o) {
+		Order order = (Order) o;
 		this.orders.remove(o);
 	}
 

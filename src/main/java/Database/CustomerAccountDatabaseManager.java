@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 import Server.Server;
 
-public class CustomerAccountDatabaseManager {
+public class CustomerAccountDatabaseManager implements DatabaseManager {
 
 	private final CustomerAccountManagerProxy customerAccountManagerProxy;
 
@@ -17,7 +17,8 @@ public class CustomerAccountDatabaseManager {
 
 	class CustomerAccountManagerProxy {
 
-		boolean isCustomerInSystemDatabase(String idNumber, String password) {
+		private boolean isCustomerInSystemDatabase(String idNumber,
+				String password) {
 			String query = "SELECT COUNT(*) AS amount FROM CUSTOMER WHERE ID_NUMBER = ? AND CUSTOMER_PASSWORD =  ?";
 
 			PreparedStatement myStatement;
@@ -67,7 +68,7 @@ public class CustomerAccountDatabaseManager {
 			}
 		}
 
-		boolean isCustomerAlreadyRegistered(String idNumber) {
+		private boolean isCustomerAlreadyRegistered(String idNumber) {
 			String query = "SELECT COUNT(*) AS amount FROM CUSTOMER WHERE ID_NUMBER = ?";
 
 			PreparedStatement myStatement;
@@ -126,7 +127,8 @@ public class CustomerAccountDatabaseManager {
 			return null;
 		}
 
-		boolean createCustomer(String idNumber, String pesel, String password) {
+		private boolean createCustomer(String idNumber, String pesel,
+				String password) {
 			String query = "SELECT create_customer(?,?,?);";
 
 			PreparedStatement myStatement;

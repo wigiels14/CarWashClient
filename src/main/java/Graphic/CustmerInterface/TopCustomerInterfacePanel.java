@@ -22,7 +22,7 @@ public class TopCustomerInterfacePanel extends HBox {
 	private final ArrayList<Service> services = new ArrayList<Service>();
 	private ArrayList<Service> serviceOrders = new ArrayList<Service>();
 	private final ArrayList<Payment> payments = new ArrayList<Payment>();
-	private EntityFactory entityFactory = new EntityFactory();;
+	private EntityFactory entityFactory = new EntityFactory();
 	Text idText, firstNameText, lastNameText, accountBalanceText;
 	Button endAppButton;
 

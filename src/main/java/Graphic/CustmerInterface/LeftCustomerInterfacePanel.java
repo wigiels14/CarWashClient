@@ -1,7 +1,10 @@
 package Graphic.CustmerInterface;
 
+import java.io.IOException;
+
 import Business.Person.Customer;
 import Business.Vehicle.Vehicle;
+import Server.ClientQuery;
 import Starting.Client;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -25,7 +28,7 @@ public class LeftCustomerInterfacePanel extends VBox {
 		changePersonalDataButton.setId("leftPanelButton");
 		changePersonalDataButton.setTranslateX(17);
 		changePersonalDataButton.setTranslateY(80);
-		changePersonalDataButton.setOnAction(e-> {
+		changePersonalDataButton.setOnAction(e -> {
 			Client.mainCustomerInterfacePanel.setCenterChangePDInterfacePanel();
 		});
 		this.getChildren().add(changePersonalDataButton);
@@ -36,7 +39,7 @@ public class LeftCustomerInterfacePanel extends VBox {
 		addVehicleButton.setId("leftPanelButton");
 		addVehicleButton.setTranslateX(17);
 		addVehicleButton.setTranslateY(90);
-		addVehicleButton.setOnAction(e-> {
+		addVehicleButton.setOnAction(e -> {
 			Client.mainCustomerInterfacePanel.setCenterAddVehicleInterfacePanel();
 		});
 		this.getChildren().add(addVehicleButton);
@@ -47,7 +50,7 @@ public class LeftCustomerInterfacePanel extends VBox {
 		showVehicleFleetButton.setId("leftPanelButton");
 		showVehicleFleetButton.setTranslateX(17);
 		showVehicleFleetButton.setTranslateY(100);
-		showVehicleFleetButton.setOnAction(e-> {
+		showVehicleFleetButton.setOnAction(e -> {
 			Client.mainCustomerInterfacePanel.setCenterShowVehicleFleetInterfacePanel();
 		});
 		this.getChildren().add(showVehicleFleetButton);
@@ -58,7 +61,7 @@ public class LeftCustomerInterfacePanel extends VBox {
 		showActiveOrders.setId("leftPanelButton");
 		showActiveOrders.setTranslateX(17);
 		showActiveOrders.setTranslateY(110);
-		showActiveOrders.setOnAction(e-> {
+		showActiveOrders.setOnAction(e -> {
 			Client.mainCustomerInterfacePanel.status = new String("1");
 			Customer customer = Client.mainCustomerInterfacePanel.topCustomerInterfacePanel.getCustomer();
 			Client.mainCustomerInterfacePanel.showActiveOrdersPanel.sendFetchOrdersByCustomerID(customer.getId());
@@ -71,7 +74,7 @@ public class LeftCustomerInterfacePanel extends VBox {
 		showOrderHistory.setId("leftPanelButton");
 		showOrderHistory.setTranslateX(17);
 		showOrderHistory.setTranslateY(120);
-		showOrderHistory.setOnAction(e-> {
+		showOrderHistory.setOnAction(e -> {
 			Client.mainCustomerInterfacePanel.status = new String("2");
 			Customer customer = Client.mainCustomerInterfacePanel.topCustomerInterfacePanel.getCustomer();
 			Client.mainCustomerInterfacePanel.showActiveOrdersPanel.sendFetchOrdersByCustomerID(customer.getId());
@@ -84,9 +87,21 @@ public class LeftCustomerInterfacePanel extends VBox {
 		addOrder.setId("leftPanelButton");
 		addOrder.setTranslateX(17);
 		addOrder.setTranslateY(130);
-		addOrder.setOnAction(e-> {
+		addOrder.setOnAction(e -> {
 			Client.mainCustomerInterfacePanel.setCenterAddOrderInterfacePanel();
 		});
 		this.getChildren().add(addOrder);
+	}
+
+	public void sendFetchCustomer() {
+		try {
+
+			ClientQuery clientQuery = new ClientQuery("fetchCustomer");
+			clientQuery.parameters[0] = Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
+					.getCustomerIdNumber();
+			Client.out.writeObject(clientQuery);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

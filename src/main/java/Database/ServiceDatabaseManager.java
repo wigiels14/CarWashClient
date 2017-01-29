@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import Server.Server;
 
-public class ServiceDatabaseManager {
+public class ServiceDatabaseManager implements DatabaseManager {
 
 	public ArrayList<String[]> fetchServicesByType(String serviceType) {
 		ArrayList<String[]> services = new ArrayList<String[]>();

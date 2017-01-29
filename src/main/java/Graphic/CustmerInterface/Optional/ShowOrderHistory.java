@@ -17,6 +17,7 @@ public class ShowOrderHistory extends GridPane {
 	ArrayList<Text> carVINs = new ArrayList<Text>();
 
 	public void initAll() {
+		this.getChildren().clear();
 		int row = 0;
 		int col = 0;
 		Customer customer = Client.mainCustomerInterfacePanel.topCustomerInterfacePanel

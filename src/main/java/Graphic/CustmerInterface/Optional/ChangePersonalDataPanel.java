@@ -92,19 +92,27 @@ public class ChangePersonalDataPanel extends GridPane {
 	}
 
 	private void setCustomerIdNumberText() {
-		idNumberText = new Text("ID number: " + customer.getIdNumber());
-		idNumberText.setId("dataText");
-		idNumberText.setTranslateX(20);
-		idNumberText.setTranslateY(40);
-		this.add(idNumberText, 0, 2);
+		if (idNumberText == null) {
+			idNumberText = new Text("ID number: " + customer.getIdNumber());
+			idNumberText.setId("dataText");
+			idNumberText.setTranslateX(20);
+			idNumberText.setTranslateY(40);
+			this.add(idNumberText, 0, 2);
+		} else {
+			idNumberText = new Text("ID number: " + customer.getIdNumber());
+		}
 	}
 
 	private void setCustomerPeselText() {
-		peselText = new Text("PESEL : " + customer.getPesel());
-		peselText.setId("dataText");
-		peselText.setTranslateX(20);
-		peselText.setTranslateY(40);
-		this.add(peselText, 0, 3);
+		if (peselText == null) {
+			peselText = new Text("PESEL : " + customer.getPesel());
+			peselText.setId("dataText");
+			peselText.setTranslateX(20);
+			peselText.setTranslateY(40);
+			this.add(peselText, 0, 3);
+		} else {
+			peselText = new Text("PESEL : " + customer.getPesel());
+		}
 	}
 
 	private void setCustomerPasswordText() {

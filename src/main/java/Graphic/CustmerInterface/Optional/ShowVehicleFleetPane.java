@@ -14,6 +14,7 @@ public class ShowVehicleFleetPane extends GridPane {
 	ArrayList<Text> modelTexts = new ArrayList<Text>();
 
 	public void initAll() {
+		this.getChildren().clear();
 		Customer customer = Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
 				.getCustomer();
 		int row = 0;

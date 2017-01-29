@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import Server.Server;
 
-public class VehicleDatabaseManager {
+public class VehicleDatabaseManager implements DatabaseManager {
 	public ArrayList<String[]> fetchVehiclesByCustomerID(String customerID) {
 		ArrayList<String[]> vehicles = new ArrayList<String[]>();
 		String query = "SELECT ID, VIN, MARK, MODEL FROM VEHICLE WHERE CUSTOMER_ID = ?";

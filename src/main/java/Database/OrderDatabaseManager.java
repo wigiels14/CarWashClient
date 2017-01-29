@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import Server.Server;
 
-public class OrderDatabaseManager {
+public class OrderDatabaseManager implements DatabaseManager {
 
 	public void createOrder(String vehicleID) {
 		String query = "SELECT create_order(?);";

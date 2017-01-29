@@ -32,11 +32,15 @@ public class AddVehiclePanel extends GridPane {
 	}
 
 	private void setVehicleVINText() {
-		vehicleVINText = new Text("VIN: ");
-		vehicleVINText.setId("dataText");
-		vehicleVINText.setTranslateX(20);
-		vehicleVINText.setTranslateY(60);
-		this.add(vehicleVINText, 0, 0);
+		if (vehicleVINText == null) {
+			vehicleVINText = new Text("VIN: ");
+			vehicleVINText.setId("dataText");
+			vehicleVINText.setTranslateX(20);
+			vehicleVINText.setTranslateY(60);
+			this.add(vehicleVINText, 0, 0);
+		} else {
+			vehicleVINText = new Text("VIN: ");
+		}
 	}
 
 	private void setVehicleVINTextField() {
@@ -47,11 +51,15 @@ public class AddVehiclePanel extends GridPane {
 	}
 
 	private void setVehicleMarkText() {
-		vehicleMarkText = new Text("Mark: ");
-		vehicleMarkText.setId("dataText");
-		vehicleMarkText.setTranslateX(20);
-		vehicleMarkText.setTranslateY(60);
-		this.add(vehicleMarkText, 0, 1);
+		if (vehicleMarkText == null) {
+			vehicleMarkText = new Text("Mark: ");
+			vehicleMarkText.setId("dataText");
+			vehicleMarkText.setTranslateX(20);
+			vehicleMarkText.setTranslateY(60);
+			this.add(vehicleMarkText, 0, 1);
+		} else {
+			vehicleMarkText = new Text("Mark: ");
+		}
 	}
 
 	private void setVehicleMarkTextField() {
@@ -62,11 +70,15 @@ public class AddVehiclePanel extends GridPane {
 	}
 
 	private void setVehicleModelText() {
-		vehicleModelText = new Text("Model: ");
-		vehicleModelText.setId("dataText");
-		vehicleModelText.setTranslateX(20);
-		vehicleModelText.setTranslateY(60);
-		this.add(vehicleModelText, 0, 2);
+		if (vehicleModelText == null) {
+			vehicleModelText = new Text("Model: ");
+			vehicleModelText.setId("dataText");
+			vehicleModelText.setTranslateX(20);
+			vehicleModelText.setTranslateY(60);
+			this.add(vehicleModelText, 0, 2);
+		} else {
+			vehicleModelText = new Text("Model: ");
+		}
 	}
 
 	private void setVehicleModelTextField() {

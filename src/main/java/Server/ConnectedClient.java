@@ -12,12 +12,12 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 public class ConnectedClient extends Thread {
-	Socket socket;
-	ServerSocket serverSocket;
-	Connection conn;
-	ObjectOutputStream out;
-	ObjectInputStream in;
-	DataOutputStream userNumberStream;
+	private final Socket socket;
+	private final ServerSocket serverSocket;
+	private final Connection conn;
+	private ObjectOutputStream out;
+	private ObjectInputStream in;
+	private DataOutputStream userNumberStream;
 
 	public ConnectedClient(Connection conn, ServerSocket serverSocket,
 			Socket socket) {
@@ -226,25 +226,25 @@ public class ConnectedClient extends Thread {
 				mark, model, customerIDNumber);
 	}
 
-	private void proceedChangeCustomerPassword(ClientQuery response) {
-		String idNumber = response.parameters[0];
-		String password = response.parameters[1];
+	private void proceedChangeCustomerPassword(ClientQuery clientQuery) {
+		String idNumber = clientQuery.parameters[0];
+		String password = clientQuery.parameters[1];
 
 		Server.complexDatabaseManager.customerAccountDatabaseManager
 				.changeCustomerPassword(idNumber, password);
 	}
 
-	private void proceedChangeCustomerLastName(ClientQuery response) {
-		String idNumber = response.parameters[0];
-		String lastName = response.parameters[1];
+	private void proceedChangeCustomerLastName(ClientQuery clientQuery) {
+		String idNumber = clientQuery.parameters[0];
+		String lastName = clientQuery.parameters[1];
 
 		Server.complexDatabaseManager.customerAccountDatabaseManager
 				.changeCustomerLastName(idNumber, lastName);
 	}
 
-	private void proceedChangeCustomerFirstName(ClientQuery response) {
-		String idNumber = response.parameters[0];
-		String firstName = response.parameters[1];
+	private void proceedChangeCustomerFirstName(ClientQuery clientQuery) {
+		String idNumber = clientQuery.parameters[0];
+		String firstName = clientQuery.parameters[1];
 
 		Server.complexDatabaseManager.customerAccountDatabaseManager
 				.changeCustomerFirstName(idNumber, firstName);

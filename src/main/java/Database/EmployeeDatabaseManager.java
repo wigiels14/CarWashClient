@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 import Server.Server;
 
-public class EmployeeDatabaseManager {
+public class EmployeeDatabaseManager implements DatabaseManager {
 	private final EmployeeDatabaseManagerProxy employeeDatabaseManagerProxy;
 
 	public EmployeeDatabaseManager() {
