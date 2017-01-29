@@ -1,17 +1,20 @@
 package Graphic.CustmerInterface;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import Business.Order.OrderRepository;
 import Business.Order.Payment.CarWashCardPayment;
 import Business.Order.Payment.Payment;
 import Business.Person.Customer;
 import Business.Person.EntityFactory;
 import Business.Person.WashStationEmployee;
 import Business.Service.Service;
+import Server.ClientQuery;
 import Starting.Client;
 
 public class TopCustomerInterfacePanel extends HBox {
@@ -114,6 +117,7 @@ public class TopCustomerInterfacePanel extends HBox {
 		endAppButton.setTranslateX(30);
 		endAppButton.setTranslateY(30);
 		endAppButton.setOnAction(e-> {
+			sendExitApp();
 			Client.primaryStage.close();
 		});
 		this.getChildren().add(endAppButton);
@@ -173,6 +177,16 @@ public class TopCustomerInterfacePanel extends HBox {
 
 	public void setCustomerIdNumber(String idNumber) {
 		customer.setIdNumber(idNumber);
+	}
+
+	public void sendExitApp() {
+		try {
+
+			ClientQuery clientQuery = new ClientQuery("sendExitApp");
+			Client.out.writeObject(clientQuery);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

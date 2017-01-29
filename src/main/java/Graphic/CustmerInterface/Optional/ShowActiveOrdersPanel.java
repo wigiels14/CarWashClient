@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import Business.Order.Order;
+import Business.Order.OrderRepository;
+import Business.Order.Iterator.OrderIterator;
+import Business.Order.Iterator.OrderIteratorType;
 import Business.Person.Customer;
 import Server.ClientQuery;
 import Starting.Client;
@@ -21,17 +24,22 @@ public class ShowActiveOrdersPanel extends GridPane {
 		int col = 0;
 		Customer customer = Client.mainCustomerInterfacePanel.topCustomerInterfacePanel
 				.getCustomer();
-		for (Order order : customer.getOrders()) {
-			if (order.getState().equals("active")
-					|| order.getState().equals("in process")) {
-				setServiceName(col, row, order);
-				col++;
-				setOrderStatusTexts(col, row, order);
-				col++;
-				setCarVINText(col, row, order);
-				col = 0;
-				row++;
-			}
+		ArrayList<Order> orders = customer.getOrders();
+		OrderRepository orderRepository = new OrderRepository();
+
+		OrderIterator orderIterator = (OrderIterator) orderRepository
+				.getIterator(OrderIteratorType.NOT_FINISHED, orders);
+
+		while (orderIterator.hasNext()) {
+			Order order = (Order) orderIterator.next();
+			System.out.println("SDAD: " + order.getId());
+			setServiceName(col, row, order);
+			col++;
+			setOrderStatusTexts(col, row, order);
+			col++;
+			setCarVINText(col, row, order);
+			col = 0;
+			row++;
 		}
 	}
 

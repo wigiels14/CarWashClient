@@ -116,7 +116,14 @@ public class ConnectedClient extends Thread {
 					.equals("changeCustomerAccountBalance")) {
 				proceedChangeAccountBalance((ClientQuery) clientQuery);
 			}
+			if (((ClientQuery) clientQuery).type.equals("sendExitApp")) {
+				proceedSendExitApp();
+			}
 		}
+	}
+
+	private void proceedSendExitApp() {
+		this.stop();
 	}
 
 	private void proceedChangeAccountBalance(ClientQuery clientQuery) {
