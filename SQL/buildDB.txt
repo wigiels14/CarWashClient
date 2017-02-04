@@ -1,0 +1,257 @@
+DROP TABLE ORDERS_CAR_STATION_EMPLOYEES;
+DROP TABLE SERVICE_DISCOUNTS;
+DROP TABLE SERVICE_ORDERS;
+DROP TABLE SERVICE;
+DROP TABLE CUSTMER_DISCOUNTS;
+DROP TABLE DISCOUNT;
+DROP TABLE ORDERS;
+DROP TABLE VEHICLE;
+DROP TABLE CAR_STATION_EMPLOYEE;
+DROP TABLE CUSTOMER;
+
+CREATE TABLE CUSTOMER(
+ID NUMERIC(10) NOT NULL PRIMARY KEY,
+CUSTOMER_PASSWORD VARCHAR(30) NOT NULL,
+FIRST_NAME VARCHAR(30),
+LAST_NAME VARCHAR(30),
+PESEL VARCHAR(11) NOT NULL,
+ID_NUMBER VARCHAR(9) NOT NULL,
+ACCOUNT_BALLANCE NUMERIC(10) NOT NULL
+);
+
+CREATE TABLE CAR_STATION_EMPLOYEE(
+ID NUMERIC(10) NOT NULL PRIMARY KEY,
+CAR_STATION_EMPLOYEE_PASSWORD VARCHAR(30) NOT NULL,
+TYPE VARCHAR(30) NOT NULL,
+FIRST_NAME VARCHAR(30) NOT NULL,
+LAST_NAME VARCHAR(30) NOT NULL,
+PESEL VARCHAR(11) NOT NULL,
+ID_NUMBER VARCHAR(9) NOT NULL
+);
+
+CREATE TABLE VEHICLE(
+ID NUMERIC(10) NOT NULL PRIMARY KEY,
+VIN VARCHAR(30) NOT NULL,
+MARK VARCHAR(30) NOT NULL,
+MODEL VARCHAR(30) NOT NULL,
+CUSTOMER_ID NUMERIC(10) REFERENCES CUSTOMER(ID)
+);
+
+
+CREATE TABLE ORDERS(
+ID NUMERIC(10) NOT NULL PRIMARY KEY,
+VEHICLE_ID NUMERIC(10) REFERENCES VEHICLE(ID),
+STATE VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE DISCOUNT(
+ID NUMERIC(10) NOT NULL PRIMARY KEY,
+AMOUNT NUMERIC(5) NOT NULL,
+DESCRIPTION VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE CUSTMER_DISCOUNTS(
+CUSTMER_ID NUMERIC(10) REFERENCES CUSTOMER(ID),
+DISCOUNT_ID NUMERIC(10) REFERENCES DISCOUNT(ID),
+PRIMARY KEY(CUSTMER_ID, DISCOUNT_ID)
+);
+
+CREATE TABLE SERVICE(
+ID NUMERIC(10) NOT NULL PRIMARY KEY,
+NAME VARCHAR(50) NOT NULL,
+SERVICE_TYPE VARCHAR(50) NOT NULL,
+COST NUMERIC(5) NOT NULL
+);
+
+CREATE TABLE SERVICE_ORDERS(
+SERVICE_ID NUMERIC(10) NOT NULL REFERENCES SERVICE(ID),
+ORDER_ID NUMERIC(10) NOT NULL REFERENCES ORDERS(ID),
+PRIMARY KEY(SERVICE_ID, ORDER_ID)
+);
+
+CREATE TABLE SERVICE_DISCOUNTS(
+SERVICE_ID NUMERIC(10) NOT NULL REFERENCES SERVICE(ID),
+DISCOUNT_ID NUMERIC(10) NOT NULL REFERENCES DISCOUNT(ID),
+PRIMARY KEY(SERVICE_ID, DISCOUNT_ID)
+);
+
+CREATE TABLE ORDERS_CAR_STATION_EMPLOYEES(
+ORDERS_ID NUMERIC(10) NOT NULL REFERENCES ORDERS(ID),
+CAR_STATION_EMPLOYEE_ID NUMERIC(10) NOT NULL REFERENCES CAR_STATION_EMPLOYEE(ID),
+PRIMARY KEY(ORDERS_ID, CAR_STATION_EMPLOYEE_ID)
+);
+
+
+DROP SEQUENCE customer_sequence;
+DROP SEQUENCE car_wash_employee_sequence;
+DROP SEQUENCE order_sequence;
+DROP SEQUENCE service_sequence;
+DROP SEQUENCE vehicle_sequence;
+DROP SEQUENCE remmitance_sequence;
+DROP SEQUENCE discount_sequence;
+
+CREATE SEQUENCE customer_sequence;
+CREATE SEQUENCE car_wash_employee_sequence;
+CREATE SEQUENCE service_sequence;
+CREATE SEQUENCE order_sequence;
+CREATE SEQUENCE vehicle_sequence;
+CREATE SEQUENCE remmitance_sequence;
+CREATE SEQUENCE discount_sequence;
+
+DROP FUNCTION create_customer(idNumber IN VARCHAR,pesel IN VARCHAR,customer_password IN VARCHAR);
+CREATE FUNCTION create_customer(idNumber IN VARCHAR,pesel IN VARCHAR,customer_password IN VARCHAR)
+RETURNS void AS $$
+BEGIN
+    INSERT INTO CUSTOMER(ID, CUSTOMER_PASSWORD, PESEL, ID_NUMBER, ACCOUNT_BALLANCE)
+    VALUES(nextval('customer_sequence'), customer_password, pesel, idNumber, 300);
+END; 
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION create_vehicle(vin IN VARCHAR, mark IN VARCHAR,model IN VARCHAR,customer_id IN NUMERIC);
+CREATE FUNCTION create_vehicle(vin IN VARCHAR, mark IN VARCHAR,model IN VARCHAR,customer_id IN NUMERIC)
+RETURNS void AS $$
+BEGIN
+    INSERT INTO VEHICLE(ID, VIN, MARK, MODEL, CUSTOMER_ID)
+    VALUES(nextval('vehicle_sequence'), vin, mark, model, customer_id);
+END; 
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION update_customer_balance(customer_id IN NUMERIC, account_balance IN NUMERIC);
+CREATE FUNCTION update_customer_balance(customer_id IN NUMERIC, account_balance IN NUMERIC)
+RETURNS void AS $$
+BEGIN
+UPDATE CUSTOMER 
+ SET ACCOUNT_BALLANCE = account_balance;
+END; 
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION change_customer_firstName(customer_id IN VARCHAR, firstName IN VARCHAR);
+CREATE FUNCTION change_customer_firstName(customer_id IN VARCHAR, firstName IN VARCHAR)
+RETURNS void AS $$
+BEGIN
+UPDATE CUSTOMER 
+ SET FIRST_NAME = firstName
+ WHERE ID_NUMBER = customer_id;
+ END; 
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION change_customer_lastName(customer_id IN VARCHAR, lastName IN VARCHAR);
+CREATE FUNCTION change_customer_lastName(customer_id IN VARCHAR, lastName IN VARCHAR)
+RETURNS void AS $$
+BEGIN
+UPDATE CUSTOMER 
+ SET LAST_NAME = lastName
+ WHERE ID_NUMBER = customer_id;
+ END; 
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION change_customer_password(customer_id IN VARCHAR, customerPassword IN VARCHAR);
+CREATE FUNCTION change_customer_password(customer_id IN VARCHAR, customerPassword IN VARCHAR)
+RETURNS void AS $$
+BEGIN
+UPDATE CUSTOMER 
+ SET CUSTOMER_PASSWORD = customerPassword
+ WHERE ID_NUMBER = customer_id;
+ END; 
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION create_order(vehicle_id NUMERIC);
+CREATE FUNCTION  create_order(vehicle_id NUMERIC)
+RETURNS void AS $$
+BEGIN
+INSERT INTO ORDERS(ID, VEHICLE_ID, STATE)
+VALUES(nextval('order_sequence'), vehicle_id, 'active');
+ END; 
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION create_service_orders(service_id IN NUMERIC, order_id IN NUMERIC);
+CREATE FUNCTION create_service_orders(service_id IN NUMERIC, order_id IN NUMERIC)
+RETURNS void AS $$
+BEGIN
+INSERT INTO SERVICE_ORDERS(SERVICE_ID, ORDER_ID)
+VALUES(service_id, order_id);
+END; 
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION change_order_status(order_id IN NUMERIC, status IN VARCHAR);
+CREATE FUNCTION change_order_status(order_id IN NUMERIC, status IN VARCHAR)
+RETURNS void AS $$
+BEGIN
+UPDATE ORDERS
+ SET STATE = status
+ WHERE ID = order_id;
+ END; 
+$$ LANGUAGE plpgsql;
+
+
+
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Soft Cloth Exterior Wash', 'TunelWashStationService', 20);
+    
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Tri-Color Polish', 'TunelWashStationService', 15);
+    
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Air-Dry', 'TunelWashStationService', 10);
+
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Vacuum, Mat Cleaners', 'TouchlessWashStationService', 17);
+    
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Cleaning All Interior And Exterior Glass', 'TouchlessWashStationService', 12);
+    
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Exterior Wash', 'TouchlessWashStationService', 21);
+
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Polishing', 'SteamWashStationService', 19);
+    
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Quick vacuum', 'SteamWashStationService', 10);
+    
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Exterior + Interior Wash', 'SteamWashStationService', 40);
+
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'High Pressure Water Wash', 'ManualWashStationService', 11);
+    
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Vacuuming', 'ManualWashStationService', 7);
+    
+INSERT INTO SERVICE(ID, NAME, SERVICE_TYPE, COST)
+VALUES(nextval('service_sequence'), 'Interior Wash', 'ManualWashStationService', 14);
+
+INSERT INTO DISCOUNT(ID, AMOUNT, DESCRIPTION)
+VALUES(nextval('discount_sequence'), 1, 'One dolar gratis');
+
+INSERT INTO DISCOUNT(ID, AMOUNT, DESCRIPTION)
+VALUES(nextval('discount_sequence'), 2, 'Two dolars gratis');
+
+INSERT INTO DISCOUNT(ID, AMOUNT, DESCRIPTION)
+VALUES(nextval('discount_sequence'), 3, 'Three dolars gratis');
+
+INSERT INTO SERVICE_DISCOUNTS(SERVICE_ID, DISCOUNT_ID)
+VALUES(1,1);
+
+INSERT INTO SERVICE_DISCOUNTS(SERVICE_ID, DISCOUNT_ID)
+VALUES(2,1);
+
+INSERT INTO SERVICE_DISCOUNTS(SERVICE_ID, DISCOUNT_ID)
+VALUES(2,2);
+
+INSERT INTO SERVICE_DISCOUNTS(SERVICE_ID, DISCOUNT_ID)
+VALUES(3,1);
+
+INSERT INTO CAR_STATION_EMPLOYEE(ID, CAR_STATION_EMPLOYEE_PASSWORD, TYPE, FIRST_NAME, LAST_NAME, PESEL, ID_NUMBER)
+VALUES(nextval('car_wash_employee_sequence'), 'admin', 'ManualWashStation', 'Wojciech', 'Waldon', '72619381631', '697842472');
+
+INSERT INTO CAR_STATION_EMPLOYEE(ID, CAR_STATION_EMPLOYEE_PASSWORD, TYPE, FIRST_NAME, LAST_NAME, PESEL, ID_NUMBER)
+VALUES(nextval('car_wash_employee_sequence'), 'admin', 'SteamWashStation', 'Kuba', 'Waldon', '82617519241', '697842473');
+
+INSERT INTO CAR_STATION_EMPLOYEE(ID, CAR_STATION_EMPLOYEE_PASSWORD, TYPE, FIRST_NAME, LAST_NAME, PESEL, ID_NUMBER)
+VALUES(nextval('car_wash_employee_sequence'), 'admin', 'TunelWashStation', 'Tomasz', 'Waldon', '82617519241', '697842474');
+
+INSERT INTO CAR_STATION_EMPLOYEE(ID, CAR_STATION_EMPLOYEE_PASSWORD, TYPE, FIRST_NAME, LAST_NAME, PESEL, ID_NUMBER)
+VALUES(nextval('car_wash_employee_sequence'), 'admin', 'TouchlessWashStation', 'Dawid', 'Waldon', '82617521441', '697842475');
+       
+       

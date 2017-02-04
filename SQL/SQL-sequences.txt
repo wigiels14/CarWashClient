@@ -1,0 +1,17 @@
+DROP SEQUENCE customer_sequence;
+DROP SEQUENCE car_wash_employee_sequence;
+DROP SEQUENCE order_sequence;
+DROP SEQUENCE service_sequence;
+DROP SEQUENCE vehicle_sequence;
+DROP SEQUENCE payment_sequence;
+DROP SEQUENCE remmitance_sequence;
+DROP SEQUENCE discount_sequence;
+
+CREATE SEQUENCE customer_sequence;
+CREATE SEQUENCE car_wash_employee_sequence;
+CREATE SEQUENCE service_sequence;
+CREATE SEQUENCE order_sequence;
+CREATE SEQUENCE vehicle_sequence;
+CREATE SEQUENCE payment_sequence;
+CREATE SEQUENCE remmitance_sequence;
+CREATE SEQUENCE discount_sequence;

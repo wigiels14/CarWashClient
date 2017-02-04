@@ -1,0 +1,245 @@
+#interfacePanel{
+-fx-background-radius: 200;
+-fx-background-image: url('rounded_corners_tlo.png');
+ -fx-effect: dropshadow(three-pass-box, derive(cadetblue, -20%), 5, 10, 14, 14); 
+}
+#carWashText {
+    -fx-font: 40px Tahoma;
+    -fx-font-weight: bold;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, #2A5058 1%, #61a2b1 50%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+#oponentNameText2 {
+    -fx-font: 40px Tahoma;
+    -fx-font-weight: bold;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, #2A5058 1%, #61a2b1 50%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+#registerText {
+    -fx-font: 75px Tahoma;
+    -fx-font-weight: bold;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, #2A5058 1%, #61a2b1 50%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+#popUpText {
+    -fx-font: 37px Tahoma;
+    -fx-font-weight: bold;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, white 0%, #61a2b1 50%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 5,0,0,1 );
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+
+#dataText {
+    -fx-font: 17px Tahoma;
+    -fx-font-weight: bold;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, white 0%, #61a2b1 50%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+#mediumDataText {
+    -fx-font: 15px Tahoma;
+    -fx-font-weight: bold;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, white 0%, #61a2b1 50%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+#registerText {
+    -fx-font: 15px Tahoma;
+    -fx-font-weight: bold;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, white 0%, #61a2b1 50%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+#wrongDataText{
+    -fx-font: 14px Tahoma;
+    -fx-font-weight: bold;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, white 0%, #61a2b1 50%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+
+.button {
+    -fx-font: 15px Tahoma;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, black 40%, #2A5058 10%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+    -fx-text-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-text-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+
+
+    -fx-background-color:  linear-gradient(#686868 0%, #2A5058 4%, #64a2b1 50%);
+    -fx-effect: dropshadow( three-pass-box , #2A5058 , 5, 0.0 , 0 , 1 );
+    -fx-effect: dropshadow( one-pass-box , #2A5058 , 8 , 0.0 , 2 , 0 );
+    -fx-padding: 6 40 6 40;
+}
+
+#wrongDataText{
+    -fx-font: 14px Tahoma;
+    -fx-font-weight: bold;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, white 0%, #61a2b1 50%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+#rollButton {
+    -fx-font: 12px Tahoma;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, black 40%, #2A5058 10%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+    -fx-text-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-text-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+
+
+    -fx-background-color:  linear-gradient(#686868 0%, #2A5058 4%, #64a2b1 50%);
+    -fx-effect: dropshadow( three-pass-box , #2A5058 , 5, 0.0 , 0 , 1 );
+    -fx-effect: dropshadow( one-pass-box , #2A5058 , 8 , 0.0 , 2 , 0 );
+    -fx-padding: 3 25 3 25;
+}
+
+#myLogInButton {
+    -fx-font: 18px Tahoma;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, black 40%, #2A5058 10%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+    -fx-text-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-text-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+
+
+    -fx-background-color:  linear-gradient(#686868 0%, #2A5058 4%, #64a2b1 50%);
+    -fx-padding: 6 50 6 50;
+}
+
+#leftPanelButton {
+    -fx-font: 10px Tahoma;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, black 40%, #2A5058 10%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+    -fx-text-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-text-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+
+
+    -fx-background-color:  linear-gradient(#686868 0%, #2A5058 4%, #64a2b1 50%);
+    -fx-padding: 6 50 6 50;
+}
+
+#leftPanelButton:hover {
+    -fx-font: 10px Tahoma;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, #2A5058 40%,black 10%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+    -fx-text-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-text-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+
+
+    -fx-background-color:  linear-gradient(#686868 0%, #2A5058 4%, #64a2b1 50%);
+    -fx-effect: dropshadow( three-pass-box , #2A5058 , 5, 0.0 , 0 , 1 );
+    -fx-effect: dropshadow( one-pass-box , #2A5058 , 8 , 0.0 , 2 , 0 );
+    -fx-padding: 6 50 6 50;
+}
+
+
+#myLogInButton:hover {
+     -fx-font: 18px Tahoma;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, #2A5058 40%,black 10%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+    -fx-text-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-text-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+
+
+    -fx-background-color:  linear-gradient(#686868 0%, #2A5058 4%, #64a2b1 50%);
+    -fx-effect: dropshadow( three-pass-box , #2A5058 , 5, 0.0 , 0 , 1 );
+    -fx-effect: dropshadow( one-pass-box , #2A5058 , 8 , 0.0 , 2 , 0 );
+    -fx-padding: 6 50 6 50;
+}
+
+#mysingUpButton {
+    -fx-font: 13px Tahoma;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, black 40%, #2A5058 10%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+    -fx-text-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-text-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+
+
+    -fx-background-color:  linear-gradient(#686868 0%, #2A5058 4%, #64a2b1 50%);
+    -fx-padding: 6 40 6 40;
+}
+
+#mysingUpButton:hover {
+     -fx-font: 13px Tahoma;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, #2A5058 40%,black 10%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+    -fx-text-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-text-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+
+
+    -fx-background-color:  linear-gradient(#686868 0%, #2A5058 4%, #64a2b1 50%);
+    -fx-effect: dropshadow( three-pass-box , #2A5058 , 5, 0.0 , 0 , 1 );
+    -fx-effect: dropshadow( one-pass-box , #2A5058 , 8 , 0.0 , 2 , 0 );
+    -fx-padding: 6 40 6 40;
+}
+
+.button:hover{
+     -fx-font: 15px Tahoma;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, #2A5058 40%,black 10%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+    -fx-text-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-text-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+
+
+    -fx-background-color:  linear-gradient(#686868 0%, #2A5058 4%, #64a2b1 50%);
+    -fx-effect: dropshadow( three-pass-box , #2A5058 , 5, 0.0 , 0 , 1 );
+    -fx-effect: dropshadow( one-pass-box , #2A5058 , 8 , 0.0 , 2 , 0 );
+    -fx-padding: 6 40 6 40;
+}
+
+#Field {
+    -fx-font: 10px Tahoma;
+    -fx-font-weight: bold;
+    -fx-background-color: #a9a9a9 , linear-gradient(#686868 0%, #2A5058 4%, #64a2b1 50%) , #64a2b1;
+    -fx-background-insets: 0 -1 -1 -1, 0 0 0 0, 0 -1 3 -1;
+    -fx-min-width: 220;
+    -fx-max-width: 200;
+    -fx-min-height: 20;
+    -fx-max-height: 20;
+}

@@ -1,0 +1,47 @@
+DROP FUNCTION create_customer(idNumber IN VARCHAR,pesel IN VARCHAR,customer_password IN VARCHAR);
+CREATE FUNCTION create_customer(idNumber IN VARCHAR,pesel IN VARCHAR,customer_password IN VARCHAR)
+RETURNS void AS $$
+BEGIN
+    INSERT INTO CUSTOMER(ID, CUSTOMER_PASSWORD, PESEL, ID_NUMBER, ACCOUNT_BALLANCE)
+    VALUES(nextval('customer_sequence'), customer_password, pesel, idNumber, 0);
+END; 
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION create_vehicle(mark IN VARCHAR,model IN VARCHAR,customer_id IN NUMERIC);
+CREATE FUNCTION create_vehicle(mark IN VARCHAR,model IN VARCHAR,customer_id IN NUMERIC)
+RETURNS void AS $$
+BEGIN
+    INSERT INTO VEHICLE(ID, MARK, MODEL, CUSTOMER_ID)
+    VALUES(nextval('vehicle_sequence'), mark, model, customer_id);
+END; 
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION change_customer_firstName(customer_id IN VARCHAR, firstName IN VARCHAR);
+CREATE FUNCTION change_customer_firstName(customer_id IN VARCHAR, firstName IN VARCHAR)
+RETURNS void AS $$
+BEGIN
+UPDATE CUSTOMER 
+ SET FIRST_NAME = firstName
+ WHERE ID_NUMBER = customer_id;
+ END; 
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION change_customer_lastName(customer_id IN VARCHAR, lastName IN VARCHAR);
+CREATE FUNCTION change_customer_lastName(customer_id IN VARCHAR, lastName IN VARCHAR)
+RETURNS void AS $$
+BEGIN
+UPDATE CUSTOMER 
+ SET LAST_NAME = lastName
+ WHERE ID_NUMBER = customer_id;
+ END; 
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION change_customer_password(customer_id IN VARCHAR, customerPassword IN VARCHAR);
+CREATE FUNCTION change_customer_password(customer_id IN VARCHAR, customerPassword IN VARCHAR)
+RETURNS void AS $$
+BEGIN
+UPDATE CUSTOMER 
+ SET CUSTOMER_PASSWORD = customerPassword
+ WHERE ID_NUMBER = customer_id;
+ END; 
+$$ LANGUAGE plpgsql;
